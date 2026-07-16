@@ -69,46 +69,34 @@ button {
 }
 
 
+/* HEADER */
+
 .top {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding-bottom: 20px;
 }
 
 
-.greeting h1 {
-    margin-bottom: 5px;
-}
-
-
-.greeting p {
-    margin-top: 0;
-}
-
-
-/* BRAND HEADER */
-
-.brand {
-    flex: 1;
+.header-title {
     text-align: center;
 }
 
 
-.brand h2 {
-    font-family: "Bodoni 72", "Bodoni MT", "Didot", serif;
-    font-size: 42px;
-    color: #5a347d;
-    margin: 0;
+.header-title h1 {
+    font-family: "Bodoni 72", "Bodoni MT", Didot, serif;
+    font-size: 46px;
     letter-spacing: 2px;
+    margin: 0;
+    color: #5a347d;
 }
 
 
-.brand p {
+.header-title p {
     font-family: "Brush Script MT", "Segoe Script", cursive;
-    font-size: 28px;
+    font-size: 30px;
+    margin: 8px 0 0;
     color: #8b62b5;
-    margin-top: 5px;
 }
 
 
@@ -161,56 +149,40 @@ button {
 
 <div class="login" id="login">
 
-    <div class="login-box">
+<div class="login-box">
 
-        <h1>The Lavender Lair</h1>
+<h1>The Lavender Lair</h1>
 
-        <p>Enter PIN</p>
+<p>Enter PIN</p>
 
-        <input id="pin" type="password" maxlength="4">
+<input id="pin" type="password" maxlength="4">
 
-        <br>
+<br>
 
-        <button onclick="unlock()">Unlock</button>
+<button onclick="unlock()">Unlock</button>
 
-    </div>
+</div>
 
 </div>
 
 
 
-
 <!-- DASHBOARD -->
-
 
 <div class="dashboard" id="dashboard">
 
 
 <div class="top">
 
+<div class="header-title">
 
-    <div class="greeting">
+<h1>The Lavender Lair</h1>
 
-        <h1 id="greeting">Good Morning, Tasha</h1>
-
-        <p>Here's what needs your attention today.</p>
-
-    </div>
-
-
-
-    <div class="brand">
-
-        <h2>The Lavender Lair</h2>
-
-        <p>Custom Creations Dashboard</p>
-
-    </div>
-
+<p id="greeting">Good Morning, Tasha</p>
 
 </div>
 
-
+</div>
 
 
 
@@ -245,8 +217,6 @@ button {
 
 
 
-
-
 <div class="status cards">
 
 
@@ -277,9 +247,7 @@ button {
 </div>
 
 
-
 </div>
-
 
 
 
@@ -309,15 +277,9 @@ let hour = new Date().getHours();
 let greeting = "Good Evening";
 
 
-if(hour < 12)
+if(hour < 12) greeting = "Good Morning";
 
-greeting = "Good Morning";
-
-
-else if(hour < 18)
-
-greeting = "Good Afternoon";
-
+else if(hour < 18) greeting = "Good Afternoon";
 
 
 document.getElementById("greeting").innerHTML = greeting + ", Tasha";
@@ -325,7 +287,6 @@ document.getElementById("greeting").innerHTML = greeting + ", Tasha";
 
 
 </script>
-
 
 
 </body>
