@@ -1,6 +1,4 @@
-from pathlib import Path
-
-html = r'''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -41,7 +39,7 @@ html = r'''<!DOCTYPE html>
     border-radius: 12px;
     z-index: 10;
   }
-  .hotspot:hover { outline: 3px solid rgba(134, 74, 190, .25); }
+  .hotspot:hover { outline: none; }
 
   .nav-hotspot { left: 1.2%; width: 18.5%; height: 5.1%; }
   .nav-dashboard { top: 34.3%; }
@@ -98,7 +96,9 @@ html = r'''<!DOCTYPE html>
     margin: 0;
     text-align: center;
     font-family: Georgia, serif;
-    font-size: clamp(24px, 2.6vw, 42px);
+    font-size: clamp(22px, 2.25vw, 38px);
+    line-height: 1;
+    white-space: nowrap;
     color: #2d0d70;
   }
 
@@ -341,6 +341,36 @@ html = r'''<!DOCTYPE html>
     background: #fff;
   }
 
+
+  .drawer-calendar {
+    background: #fff;
+    border: 1px solid #e1d6eb;
+    border-radius: 16px;
+    padding: 18px;
+  }
+
+  .drawer-calendar .calendar-top {
+    grid-template-columns: 64px 1fr 64px;
+  }
+
+  .drawer-calendar .month-heading {
+    font-size: clamp(25px, 4vw, 38px);
+  }
+
+  .drawer-calendar .calendar-legend {
+    margin: 12px 0 16px;
+    font-size: 16px;
+  }
+
+  .drawer-calendar .day {
+    min-height: 62px;
+    font-size: 18px;
+  }
+
+  .drawer-calendar .weekdays div {
+    font-size: 16px;
+  }
+
   @media (max-width: 1200px) {
     .dashboard-stage { min-width: 1000px; }
   }
@@ -553,6 +583,28 @@ function openDrawer(section) {
   document.getElementById("drawerTitle").textContent = section;
   document.getElementById("drawerContent").innerHTML = renderSection(section);
   document.getElementById("drawer").classList.add("open");
+
+  if (section === "Calendar") {
+    document.getElementById("drawerPrevMonth").addEventListener("click", () => {
+      displayedDate = new Date(
+        displayedDate.getFullYear(),
+        displayedDate.getMonth() - 1,
+        1
+      );
+      renderCalendar();
+    });
+
+    document.getElementById("drawerNextMonth").addEventListener("click", () => {
+      displayedDate = new Date(
+        displayedDate.getFullYear(),
+        displayedDate.getMonth() + 1,
+        1
+      );
+      renderCalendar();
+    });
+
+    renderDrawerCalendar();
+  }
 }
 
 function closeDrawer() {
@@ -623,7 +675,28 @@ function renderSection(section) {
   }
 
   if (key === "calendar") {
-    return `<div class="empty">Use the live calendar on the dashboard. Order due dates appear there automatically.</div>`;
+    return `
+      <section class="drawer-calendar" aria-label="Full calendar">
+        <div class="calendar-top">
+          <button class="month-arrow" id="drawerPrevMonth" aria-label="Previous month">‹</button>
+          <h3 class="month-heading" id="drawerMonthHeading"></h3>
+          <button class="month-arrow" id="drawerNextMonth" aria-label="Next month">›</button>
+        </div>
+
+        <div class="calendar-legend">
+          <span class="legend"><span class="dot order"></span>Order Due</span>
+          <span class="legend"><span class="dot payment"></span>Waiting for Payment</span>
+        </div>
+
+        <div class="calendar-box">
+          <div class="weekdays">
+            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div>
+            <div>Thu</div><div>Fri</div><div>Sat</div>
+          </div>
+          <div class="days" id="drawerCalendarDays"></div>
+        </div>
+      </section>
+    `;
   }
 
   return `<div class="empty">${escapeHtml(section)} is ready for us to build next.</div>`;
@@ -651,15 +724,8 @@ function updateDashboard() {
   renderCalendar();
 }
 
-function renderCalendar() {
-  const year = displayedDate.getFullYear();
-  const month = displayedDate.getMonth();
-  const heading = document.getElementById("monthHeading");
-  const days = document.getElementById("calendarDays");
-  const monthName = displayedDate.toLocaleString("en-US", { month: "long" });
-
-  heading.textContent = `✦  ${monthName} ${year}  ✦`;
-  days.innerHTML = "";
+function fillCalendarGrid(daysElement, year, month) {
+  daysElement.innerHTML = "";
 
   const firstDay = new Date(year, month, 1).getDay();
   const count = new Date(year, month + 1, 0).getDate();
@@ -669,7 +735,7 @@ function renderCalendar() {
     const blank = document.createElement("div");
     blank.className = "day blank";
     blank.textContent = ".";
-    days.appendChild(blank);
+    daysElement.appendChild(blank);
   }
 
   for (let day = 1; day <= count; day++) {
@@ -682,7 +748,9 @@ function renderCalendar() {
     const orders = data.orders.filter(order => order.dueDate === key);
 
     if (orders.length) cell.classList.add("has-order");
-    if (orders.some(order => order.status === "payment")) cell.classList.add("has-payment");
+    if (orders.some(order => order.status === "payment")) {
+      cell.classList.add("has-payment");
+    }
 
     if (
       day === today.getDate() &&
@@ -693,17 +761,44 @@ function renderCalendar() {
     }
 
     cell.appendChild(span);
-    days.appendChild(cell);
+    daysElement.appendChild(cell);
   }
 
   const total = firstDay + count;
   const target = total <= 35 ? 35 : 42;
+
   for (let i = total; i < target; i++) {
     const blank = document.createElement("div");
     blank.className = "day blank";
     blank.textContent = ".";
-    days.appendChild(blank);
+    daysElement.appendChild(blank);
   }
+}
+
+function renderDrawerCalendar() {
+  const heading = document.getElementById("drawerMonthHeading");
+  const days = document.getElementById("drawerCalendarDays");
+
+  if (!heading || !days) return;
+
+  const year = displayedDate.getFullYear();
+  const month = displayedDate.getMonth();
+  const monthName = displayedDate.toLocaleString("en-US", { month: "long" });
+
+  heading.textContent = `✦  ${monthName} ${year}  ✦`;
+  fillCalendarGrid(days, year, month);
+}
+
+function renderCalendar() {
+  const year = displayedDate.getFullYear();
+  const month = displayedDate.getMonth();
+  const heading = document.getElementById("monthHeading");
+  const days = document.getElementById("calendarDays");
+  const monthName = displayedDate.toLocaleString("en-US", { month: "long" });
+
+  heading.textContent = `✦  ${monthName} ${year}  ✦`;
+  fillCalendarGrid(days, year, month);
+  renderDrawerCalendar();
 }
 
 document.getElementById("prevMonth").addEventListener("click", () => {
@@ -724,8 +819,3 @@ updateDashboard();
 </script>
 </body>
 </html>
-'''
-
-path = Path("/mnt/data/index.html")
-path.write_text(html, encoding="utf-8")
-print(f"Created {path} ({path.stat().st_size:,} bytes)")
