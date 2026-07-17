@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=Allura&family=Bodoni+Moda:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
         :root {
             --deep-purple: #4f286f;
             --main-purple: #654088;
@@ -39,19 +41,16 @@
             font-family: inherit;
         }
 
-        /* Full-width header */
-
         .top-header {
             min-height: 170px;
             padding: 30px 45px 30px 300px;
             color: white;
-            background:
-                linear-gradient(
-                    110deg,
-                    var(--deep-purple),
-                    var(--main-purple) 55%,
-                    var(--medium-purple)
-                );
+            background: linear-gradient(
+                110deg,
+                var(--deep-purple),
+                var(--main-purple) 55%,
+                var(--medium-purple)
+            );
             box-shadow: 0 8px 24px rgba(65, 35, 88, 0.22);
         }
 
@@ -64,21 +63,18 @@
         }
 
         .top-header h2 {
-    margin: 12px 0 0;
-    font-family: "Brittany Signature", "Allura", cursive;
-    font-size: 34px;
-    font-weight: 400;
-    line-height: 1.1;
-}
+            margin: 10px 0 0;
+            font-family: "Allura", cursive;
+            font-size: 40px;
+            font-weight: 400;
+            line-height: 1;
         }
 
         .top-header p {
-            margin: 0;
+            margin: 5px 0 0;
             color: rgba(255, 255, 255, 0.78);
             font-size: 14px;
         }
-
-        /* Main layout */
 
         .layout {
             display: grid;
@@ -86,17 +82,14 @@
             min-height: calc(100vh - 170px);
         }
 
-        /* Sidebar */
-
         .sidebar {
             position: relative;
             padding: 0 18px 35px;
-            background:
-                linear-gradient(
-                    180deg,
-                    #d8c6e7,
-                    #eadff1
-                );
+            background: linear-gradient(
+                180deg,
+                #d8c6e7,
+                #eadff1
+            );
             border-right: 1px solid rgba(79, 40, 111, 0.1);
         }
 
@@ -167,8 +160,6 @@
             text-align: center;
         }
 
-        /* Main content */
-
         .main {
             min-width: 0;
             padding: 30px 34px 45px;
@@ -180,8 +171,6 @@
             gap: 24px;
             align-items: start;
         }
-
-        /* Calendar */
 
         .calendar {
             overflow: hidden;
@@ -288,8 +277,6 @@
             background: #f8f5fa;
         }
 
-        /* Right side */
-
         .right-panel {
             display: flex;
             flex-direction: column;
@@ -347,8 +334,6 @@
             cursor: pointer;
         }
 
-        /* Bottom status cards */
-
         .summary {
             grid-column: 1 / -1;
             display: grid;
@@ -387,8 +372,6 @@
         .ready {
             border-left: 5px solid #36785a;
         }
-
-        /* Responsive */
 
         @media (max-width: 1050px) {
             .content-grid {
@@ -458,63 +441,6 @@
 
             <div class="menu">
 
-    <button class="menu-item active">
-        <span class="menu-icon">🏠</span>
-        <span>Dashboard</span>
-    </button>
-
-    <button class="menu-item">
-        <span class="menu-icon">📅</span>
-        <span>Calendar</span>
-    </button>
-
-    <button class="menu-item">
-        <span class="menu-icon">📝</span>
-        <span>Orders</span>
-    </button>
-
-    <button class="menu-item">
-        <span class="menu-icon">👤</span>
-        <span>Customers</span>
-    </button>
-
-    <button class="menu-item">
-        <span class="menu-icon">📦</span>
-        <span>Inventory</span>
-    </button>
-
-    <button class="menu-item">
-        <span class="menu-icon">🧾</span>
-        <span>Invoices</span>
-    </button>
-
-    <button class="menu-item">
-        <span class="menu-icon">💰</span>
-        <span>Payments</span>
-    </button>
-
-    <button class="menu-item">
-        <span class="menu-icon">📁</span>
-        <span>Files</span>
-    </button>
-
-    <button class="menu-item">
-        <span class="menu-icon">🎨</span>
-        <span>Designs</span>
-    </button>
-
-    <button class="menu-item">
-        <span class="menu-icon">⚙️</span>
-        <span>Settings</span>
-    </button>
-
-    <button class="menu-item">
-        <span class="menu-icon">🚪</span>
-        <span>Sign Out</span>
-    </button>
-
-</div>
-
                 <button class="menu-item active">
                     <span class="menu-icon">🏠</span>
                     <span>Dashboard</span>
@@ -541,8 +467,8 @@
                 </button>
 
                 <button class="menu-item">
-                    <span class="menu-icon">🎨</span>
-                    <span>Designs</span>
+                    <span class="menu-icon">🧾</span>
+                    <span>Invoices</span>
                 </button>
 
                 <button class="menu-item">
@@ -553,6 +479,11 @@
                 <button class="menu-item">
                     <span class="menu-icon">📁</span>
                     <span>Files</span>
+                </button>
+
+                <button class="menu-item">
+                    <span class="menu-icon">🎨</span>
+                    <span>Designs</span>
                 </button>
 
                 <button class="menu-item">
@@ -611,131 +542,43 @@
                         <div class="day empty-day"></div>
                         <div class="day empty-day"></div>
 
-                        <div class="day">
-                            <div class="day-number">1</div>
-                        </div>
+                        <div class="day"><div class="day-number">1</div></div>
+                        <div class="day"><div class="day-number">2</div></div>
+                        <div class="day"><div class="day-number">3</div></div>
+                        <div class="day"><div class="day-number">4</div></div>
 
-                        <div class="day">
-                            <div class="day-number">2</div>
-                        </div>
+                        <div class="day"><div class="day-number">5</div></div>
+                        <div class="day"><div class="day-number">6</div></div>
+                        <div class="day"><div class="day-number">7</div></div>
+                        <div class="day"><div class="day-number">8</div></div>
+                        <div class="day"><div class="day-number">9</div></div>
+                        <div class="day"><div class="day-number">10</div></div>
+                        <div class="day"><div class="day-number">11</div></div>
 
-                        <div class="day">
-                            <div class="day-number">3</div>
-                        </div>
+                        <div class="day"><div class="day-number">12</div></div>
+                        <div class="day"><div class="day-number">13</div></div>
+                        <div class="day"><div class="day-number">14</div></div>
+                        <div class="day"><div class="day-number">15</div></div>
+                        <div class="day"><div class="day-number">16</div></div>
+                        <div class="day today"><div class="day-number">17</div></div>
+                        <div class="day"><div class="day-number">18</div></div>
 
-                        <div class="day">
-                            <div class="day-number">4</div>
-                        </div>
+                        <div class="day"><div class="day-number">19</div></div>
+                        <div class="day"><div class="day-number">20</div></div>
+                        <div class="day"><div class="day-number">21</div></div>
+                        <div class="day"><div class="day-number">22</div></div>
+                        <div class="day"><div class="day-number">23</div></div>
+                        <div class="day"><div class="day-number">24</div></div>
+                        <div class="day"><div class="day-number">25</div></div>
 
-                        <div class="day">
-                            <div class="day-number">5</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">6</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">7</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">8</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">9</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">10</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">11</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">12</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">13</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">14</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">15</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">16</div>
-                        </div>
-
-                        <div class="day today">
-                            <div class="day-number">17</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">18</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">19</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">20</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">21</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">22</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">23</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">24</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">25</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">26</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">27</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">28</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">29</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">30</div>
-                        </div>
-
-                        <div class="day">
-                            <div class="day-number">31</div>
-                        </div>
-
+                        <div class="day"><div class="day-number">26</div></div>
+                        <div class="day"><div class="day-number">27</div></div>
+                        <div class="day"><div class="day-number">28</div></div>
+                        <div class="day"><div class="day-number">29</div></div>
+                        <div class="day"><div class="day-number">30</div></div>
+                        <div class="day"><div class="day-number">31</div></div>
                         <div class="day empty-day"></div>
+
                     </div>
 
                 </section>
@@ -754,9 +597,7 @@
                     <section class="side-card">
                         <h3>Upcoming Tasks</h3>
 
-                        <p>
-                            No upcoming orders have been added yet.
-                        </p>
+                        <p>No upcoming orders have been added yet.</p>
 
                         <button class="view-orders">
                             View All Orders
