@@ -6,15 +6,14 @@
 
     <title>The Lavender Lair Dashboard</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Great+Vibes&family=Playfair+Display:wght@600;700&display=swap"
         rel="stylesheet"
     >
 
-    <!-- Icons -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -35,7 +34,6 @@
             --green: #4a9f62;
             --red: #c8193f;
             --text: #27145f;
-            --border: #e8e1ee;
             --white: #ffffff;
             --sidebar-width: 325px;
             --header-height: 282px;
@@ -54,24 +52,14 @@
         body {
             font-family: "DM Sans", sans-serif;
             color: var(--text);
-            background:
-                radial-gradient(circle at 70% 30%, rgba(183, 143, 222, 0.12), transparent 32%),
-                #fbfaff;
+            background: #fbfaff;
             overflow-x: hidden;
         }
 
-        button,
-        input {
-            font: inherit;
-        }
-
         button {
+            font: inherit;
             cursor: pointer;
         }
-
-        /* =========================================================
-           PAGE LAYOUT
-        ========================================================= */
 
         .dashboard {
             min-height: 100vh;
@@ -79,9 +67,7 @@
             grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
         }
 
-        /* =========================================================
-           SIDEBAR
-        ========================================================= */
+        /* LEFT SIDEBAR */
 
         .sidebar {
             position: fixed;
@@ -90,61 +76,47 @@
             left: 0;
             z-index: 20;
             width: var(--sidebar-width);
-            background:
-                linear-gradient(
-                    180deg,
-                    rgba(255, 255, 255, 0.98),
-                    rgba(255, 252, 255, 0.96)
-                );
-            border-right: 1px solid rgba(72, 38, 122, 0.1);
-            box-shadow: 8px 0 30px rgba(53, 29, 91, 0.08);
             display: flex;
             flex-direction: column;
+            background: #ffffff;
+            border-right: 1px solid rgba(72, 38, 122, 0.1);
+            box-shadow: 8px 0 30px rgba(53, 29, 91, 0.08);
         }
 
         .logo-area {
-            height: 347px;
+            height: 330px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0;
-            overflow: visible;
+            padding: 12px;
         }
 
         .logo-circle {
-            width: 355px;
-            height: 355px;
-            position: relative;
+            width: 310px;
+            height: 310px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: -8px;
-        }
-
-        .logo-circle::after {
-            content: "";
-            position: absolute;
-            inset: 28px;
+            overflow: hidden;
             border-radius: 50%;
+            background: #ffffff;
             box-shadow:
                 0 18px 35px rgba(52, 24, 96, 0.18),
-                0 0 0 1px rgba(75, 34, 136, 0.07);
-            z-index: -1;
+                0 0 0 1px rgba(75, 34, 136, 0.08);
         }
 
         .logo-circle img {
             width: 100%;
             height: 100%;
             display: block;
-            object-fit: contain;
+            object-fit: cover;
+            object-position: center;
         }
 
         .navigation {
             flex: 1;
             overflow-y: auto;
-            padding: 3px 20px 20px;
-            scrollbar-width: thin;
-            scrollbar-color: #c7b1dd transparent;
+            padding: 4px 20px 20px;
         }
 
         .nav-item {
@@ -162,27 +134,21 @@
             text-align: left;
             font-size: 20px;
             font-weight: 500;
-            transition:
-                background 160ms ease,
-                color 160ms ease,
-                transform 160ms ease;
         }
 
         .nav-item:hover {
             background: #f1e9f8;
-            transform: translateX(3px);
         }
 
         .nav-item.active {
-            color: white;
+            color: #ffffff;
             font-weight: 700;
-            background:
-                linear-gradient(
-                    135deg,
-                    #381574 0%,
-                    #52258f 55%,
-                    #3e1878 100%
-                );
+            background: linear-gradient(
+                135deg,
+                #381574 0%,
+                #52258f 55%,
+                #3e1878 100%
+            );
             box-shadow: 0 8px 18px rgba(58, 23, 116, 0.18);
         }
 
@@ -252,32 +218,31 @@
             font-size: 25px;
         }
 
-        /* =========================================================
-           MAIN CONTENT
-        ========================================================= */
+        /* MAIN AREA */
 
         .main {
             grid-column: 2;
             min-width: 0;
         }
 
-        /* =========================================================
-           HEADER
-        ========================================================= */
+        /* HEADER */
 
         .hero {
             position: relative;
             height: var(--header-height);
             overflow: hidden;
-            color: white;
+            color: #ffffff;
             background:
-                radial-gradient(circle at 77% 54%, rgba(202, 93, 221, 0.38), transparent 19%),
-                radial-gradient(circle at 96% 17%, rgba(186, 90, 211, 0.25), transparent 18%),
+                radial-gradient(
+                    circle at 80% 48%,
+                    rgba(201, 96, 220, 0.32),
+                    transparent 22%
+                ),
                 linear-gradient(
                     112deg,
                     #2b155d 0%,
                     #321565 35%,
-                    #3a176d 59%,
+                    #3a176d 60%,
                     #241052 100%
                 );
         }
@@ -286,20 +251,19 @@
             content: "";
             position: absolute;
             inset: 0;
-            opacity: 0.22;
+            opacity: 0.24;
             background-image:
                 radial-gradient(circle, #ffffff 0 1px, transparent 1.5px),
                 radial-gradient(circle, #ffffff 0 1px, transparent 1.5px);
             background-position: 0 0, 41px 31px;
             background-size: 66px 66px, 93px 93px;
-            pointer-events: none;
         }
 
         .hero-content {
             position: relative;
             z-index: 4;
             height: 100%;
-            padding: 20px 430px 24px 66px;
+            padding: 20px 380px 24px 66px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -308,243 +272,149 @@
         .hero-title {
             margin: -10px 0 0;
             font-family: "Playfair Display", serif;
-            font-size: clamp(56px, 6.3vw, 103px);
+            font-size: clamp(56px, 6vw, 96px);
             font-weight: 600;
             line-height: 1;
             letter-spacing: -3px;
-            text-shadow: 0 3px 14px rgba(13, 5, 37, 0.18);
             white-space: nowrap;
         }
 
         .hero-greeting {
-            margin: 1px 0 2px;
+            margin: 4px 0 2px;
             font-family: "Great Vibes", cursive;
-            font-size: clamp(52px, 5.1vw, 83px);
+            font-size: clamp(52px, 5vw, 78px);
             line-height: 1.1;
             font-weight: 400;
+            white-space: nowrap;
             text-shadow:
                 0 0 9px rgba(255, 207, 255, 0.45),
                 0 0 22px rgba(218, 120, 255, 0.3);
-            white-space: nowrap;
         }
 
         .hero-subtitle {
             margin: 9px 0 0;
             font-size: 28px;
-            font-weight: 400;
             color: rgba(255, 255, 255, 0.94);
         }
-
-        /* Floating decorative stars */
 
         .sparkle {
             position: absolute;
             z-index: 3;
             color: #fff4d7;
             filter: drop-shadow(0 0 7px rgba(255, 205, 255, 0.75));
-            user-select: none;
         }
 
         .sparkle.one {
-            top: 40px;
+            top: 38px;
             right: 315px;
             font-size: 43px;
         }
 
         .sparkle.two {
-            top: 113px;
+            top: 112px;
             right: 384px;
             font-size: 23px;
         }
 
         .sparkle.three {
-            top: 50px;
-            right: 106px;
+            top: 48px;
+            right: 105px;
             font-size: 39px;
         }
 
         .sparkle.four {
-            top: 137px;
+            top: 138px;
             right: 32px;
             font-size: 17px;
         }
 
         .sparkle.five {
-            bottom: 85px;
-            right: 460px;
+            bottom: 82px;
+            right: 455px;
             font-size: 26px;
         }
 
-        .sparkle.six {
-            top: 30px;
-            right: 43px;
-            font-size: 14px;
-        }
-
-        /* Decorative leafy branch */
-
-        .branch {
-            position: absolute;
-            right: 297px;
-            bottom: 3px;
-            z-index: 2;
-            width: 270px;
-            height: 158px;
-            opacity: 0.76;
-            transform: rotate(1deg);
-        }
-
-        .branch-stem {
-            position: absolute;
-            width: 239px;
-            height: 4px;
-            right: 0;
-            bottom: 31px;
-            background: #c18bac;
-            border-radius: 50%;
-            transform: rotate(-19deg);
-            transform-origin: right center;
-        }
-
-        .branch-leaf {
-            position: absolute;
-            width: 45px;
-            height: 15px;
-            border-radius: 100% 0 100% 0;
-            background: linear-gradient(90deg, #bd7ca3, #d49bbb);
-            transform-origin: 100% 50%;
-        }
-
-        .branch-leaf:nth-child(2) {
-            right: 34px;
-            bottom: 61px;
-            transform: rotate(-58deg);
-        }
-
-        .branch-leaf:nth-child(3) {
-            right: 69px;
-            bottom: 73px;
-            transform: rotate(-93deg);
-        }
-
-        .branch-leaf:nth-child(4) {
-            right: 102px;
-            bottom: 76px;
-            transform: rotate(-123deg);
-        }
-
-        .branch-leaf:nth-child(5) {
-            right: 135px;
-            bottom: 79px;
-            transform: rotate(-147deg);
-        }
-
-        .branch-leaf:nth-child(6) {
-            right: 49px;
-            bottom: 31px;
-            transform: scaleY(-1) rotate(-49deg);
-        }
-
-        .branch-leaf:nth-child(7) {
-            right: 88px;
-            bottom: 31px;
-            transform: scaleY(-1) rotate(-77deg);
-        }
-
-        .branch-leaf:nth-child(8) {
-            right: 130px;
-            bottom: 37px;
-            transform: scaleY(-1) rotate(-102deg);
-        }
-
-        .branch-leaf:nth-child(9) {
-            right: 170px;
-            bottom: 46px;
-            transform: scaleY(-1) rotate(-125deg);
-        }
-
-        /* =========================================================
-           CSS DOOR
-        ========================================================= */
-
         .door-scene {
             position: absolute;
-            right: 72px;
-            bottom: -4px;
+            right: 58px;
+            bottom: -5px;
             z-index: 4;
-            width: 240px;
-            height: 258px;
+            width: 245px;
+            height: 260px;
         }
 
         .door-glow {
             position: absolute;
-            left: 36px;
+            left: 35px;
             bottom: 0;
-            width: 170px;
+            width: 175px;
             height: 230px;
             border-radius: 95px 95px 12px 12px;
             background:
-                radial-gradient(circle at 50% 71%, #fff7dd 0, #e89bf1 8%, #7b37c2 28%, transparent 62%);
+                radial-gradient(
+                    circle at 50% 72%,
+                    #fff5d6 0,
+                    #e99af1 10%,
+                    #7a37c1 30%,
+                    transparent 65%
+                );
             filter: blur(8px);
-            opacity: 0.9;
         }
 
-        .door-arch {
+        .door-frame {
             position: absolute;
             left: 18px;
             bottom: 0;
-            width: 204px;
+            width: 208px;
             height: 252px;
-            border-radius: 106px 106px 8px 8px;
-            border: 22px solid #e3c7dc;
+            border-radius: 108px 108px 8px 8px;
+            border: 20px solid #dec1d8;
             border-bottom-width: 10px;
             box-shadow:
                 inset 0 0 0 3px #6c387b,
                 0 0 0 2px rgba(255, 255, 255, 0.35);
         }
 
-        .door-arch::before {
-            content: "";
-            position: absolute;
-            inset: -18px;
-            border-radius: inherit;
-            border: 2px solid #6b397a;
-        }
-
-        .door-inner {
+        .door-opening {
             position: absolute;
             left: 40px;
             bottom: 9px;
-            width: 160px;
+            width: 162px;
             height: 220px;
-            border-radius: 80px 80px 4px 4px;
             overflow: hidden;
             border: 3px solid #231044;
+            border-radius: 82px 82px 4px 4px;
             background:
-                radial-gradient(circle at 50% 73%, #fff5d1 0 3%, #e786f0 8%, #813fc2 25%, #1b0a48 66%),
-                #210b4c;
+                radial-gradient(
+                    circle at 48% 72%,
+                    #fff5d1 0 3%,
+                    #e786f0 8%,
+                    #813fc2 25%,
+                    #1b0a48 66%
+                );
         }
 
-        .door-inner::before {
-            content: "✦   ·   ✧  · ✦   · ✧   ·  ✦";
+        .door-opening::before {
+            content: "✦  ·  ✧  ·  ✦  ·  ✧  ·  ✦";
             position: absolute;
-            inset: 25px 12px auto;
-            color: white;
+            top: 24px;
+            left: 13px;
+            right: 10px;
+            color: #ffffff;
             font-size: 15px;
             line-height: 42px;
-            letter-spacing: 7px;
-            opacity: 0.94;
-            text-shadow: 0 0 8px white;
+            letter-spacing: 6px;
+            text-shadow: 0 0 8px #ffffff;
         }
 
         .door-panel {
             position: absolute;
             right: 40px;
             bottom: 8px;
-            width: 83px;
+            width: 84px;
             height: 223px;
-            border-radius: 0 72px 3px 0;
             border: 3px solid #36104f;
+            border-radius: 0 72px 3px 0;
             background:
                 linear-gradient(
                     90deg,
@@ -553,7 +423,12 @@
                     rgba(255, 255, 255, 0.1) 28%,
                     transparent 30%
                 ),
-                linear-gradient(90deg, #76368d, #a351ac 52%, #6a2e80);
+                linear-gradient(
+                    90deg,
+                    #76368d,
+                    #a351ac 52%,
+                    #6a2e80
+                );
             box-shadow:
                 inset 10px 0 12px rgba(31, 6, 55, 0.28),
                 inset -5px 0 5px rgba(255, 210, 255, 0.15);
@@ -565,7 +440,6 @@
             position: absolute;
             left: 17px;
             right: 15px;
-            height: 2px;
             border-top: 2px solid rgba(47, 10, 69, 0.48);
         }
 
@@ -579,23 +453,33 @@
 
         .door-knob {
             position: absolute;
-            right: 86px;
-            bottom: 107px;
+            right: 87px;
+            bottom: 106px;
             width: 17px;
-            height: 25px;
+            height: 24px;
+            border: 2px solid #25101b;
             border-radius: 50%;
             background:
-                radial-gradient(circle at 32% 30%, #fff1b4, #92733e 38%, #392315 74%);
-            border: 2px solid #25101b;
-            box-shadow: 0 1px 5px #000;
+                radial-gradient(
+                    circle at 32% 30%,
+                    #fff1b4,
+                    #92733e 38%,
+                    #392315 74%
+                );
         }
 
-        /* =========================================================
-           DASHBOARD CONTENT
-        ========================================================= */
+        /* DASHBOARD CONTENT */
 
         .content {
             padding: 20px 27px 30px;
+        }
+
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
         }
 
         .top-grid {
@@ -606,7 +490,7 @@
         }
 
         .panel {
-            background: rgba(255, 255, 255, 0.96);
+            background: #ffffff;
             border: 1px solid rgba(76, 35, 135, 0.08);
             border-radius: 19px;
             box-shadow:
@@ -614,9 +498,7 @@
                 0 14px 34px rgba(69, 35, 113, 0.05);
         }
 
-        /* =========================================================
-           CALENDAR
-        ========================================================= */
+        /* CALENDAR */
 
         .calendar-panel {
             min-height: 547px;
@@ -637,21 +519,8 @@
             border: 0;
             border-radius: 10px;
             color: #382072;
-            background:
-                linear-gradient(
-                    135deg,
-                    #eee4f5,
-                    #e4d6ef
-                );
+            background: linear-gradient(135deg, #eee4f5, #e4d6ef);
             font-size: 32px;
-            transition:
-                transform 150ms ease,
-                background 150ms ease;
-        }
-
-        .month-button:hover {
-            transform: scale(1.04);
-            background: #dcccеb;
         }
 
         .month-title {
@@ -663,7 +532,7 @@
             color: #30176c;
         }
 
-        .month-title .month-star {
+        .month-star {
             display: inline-block;
             margin: 0 22px;
             color: #bd91df;
@@ -701,22 +570,21 @@
         }
 
         .calendar-shell {
+            overflow: hidden;
             border: 1px solid #ddd8e5;
             border-radius: 12px;
-            overflow: hidden;
         }
 
         .weekdays {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            color: white;
-            background:
-                linear-gradient(
-                    90deg,
-                    #3e197b,
-                    #542395 52%,
-                    #3d1979
-                );
+            color: #ffffff;
+            background: linear-gradient(
+                90deg,
+                #3e197b,
+                #542395 52%,
+                #3d1979
+            );
         }
 
         .weekday {
@@ -744,15 +612,10 @@
             font-weight: 600;
             color: #24115d;
             background: #ffffff;
-            transition: background 140ms ease;
         }
 
         .calendar-day:nth-child(7n) {
             border-right: 0;
-        }
-
-        .calendar-day:hover:not(.empty) {
-            background: #f6f0fb;
         }
 
         .calendar-day.empty {
@@ -767,35 +630,14 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            background:
-                radial-gradient(
-                    circle at 35% 30%,
-                    #f2e8f7,
-                    #dfcceb
-                );
+            background: radial-gradient(
+                circle at 35% 30%,
+                #f2e8f7,
+                #dfcceb
+            );
         }
 
-        .calendar-day.has-order::after,
-        .calendar-day.has-payment::after {
-            content: "";
-            position: absolute;
-            bottom: 7px;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-        }
-
-        .calendar-day.has-order::after {
-            background: #7d42b9;
-        }
-
-        .calendar-day.has-payment::after {
-            background: var(--red);
-        }
-
-        /* =========================================================
-           RIGHT COLUMN
-        ========================================================= */
+        /* RIGHT PANELS */
 
         .side-panels {
             display: grid;
@@ -804,6 +646,11 @@
 
         .quick-panel {
             padding: 14px 24px 20px;
+        }
+
+        .tasks-panel {
+            min-height: 202px;
+            padding: 16px 24px 15px;
         }
 
         .panel-heading {
@@ -817,7 +664,6 @@
             margin: 0;
             font-family: "Playfair Display", serif;
             font-size: 27px;
-            line-height: 1.2;
             color: #32166d;
         }
 
@@ -838,27 +684,17 @@
             align-items: center;
             gap: 17px;
             padding: 7px 11px;
-            color: white;
             border: 0;
             border-radius: 8px;
-            background:
-                linear-gradient(
-                    112deg,
-                    #37166f,
-                    #562493 65%,
-                    #3d1878
-                );
+            color: #ffffff;
+            background: linear-gradient(
+                112deg,
+                #37166f,
+                #562493 65%,
+                #3d1878
+            );
             font-size: 20px;
             text-align: left;
-            box-shadow: 0 3px 5px rgba(55, 21, 110, 0.15);
-            transition:
-                transform 140ms ease,
-                filter 140ms ease;
-        }
-
-        .quick-action:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.08);
         }
 
         .action-icon {
@@ -869,11 +705,8 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            color: white;
+            color: #ffffff;
             font-size: 22px;
-            box-shadow:
-                inset 0 0 0 4px rgba(255, 255, 255, 0.14),
-                0 3px 8px rgba(23, 5, 55, 0.18);
         }
 
         .action-icon.purple {
@@ -890,11 +723,6 @@
 
         .action-icon.blue {
             background: linear-gradient(135deg, #8db0ef, #5a81d3);
-        }
-
-        .tasks-panel {
-            padding: 16px 24px 15px;
-            min-height: 202px;
         }
 
         .empty-task {
@@ -924,24 +752,6 @@
             background: #ffffff;
         }
 
-        .moon-star {
-            position: absolute;
-            z-index: 2;
-            color: #b47bd2;
-            font-size: 17px;
-        }
-
-        .moon-star.one {
-            right: -12px;
-            top: -6px;
-        }
-
-        .moon-star.two {
-            right: -23px;
-            top: 17px;
-            font-size: 11px;
-        }
-
         .empty-task p {
             margin: 0;
             font-size: 18px;
@@ -955,22 +765,12 @@
             border: 1.5px solid #6e35ad;
             border-radius: 8px;
             color: #2f116f;
-            background: white;
+            background: #ffffff;
             font-size: 18px;
             font-weight: 700;
-            transition:
-                color 140ms ease,
-                background 140ms ease;
         }
 
-        .view-orders:hover {
-            color: white;
-            background: #4b2188;
-        }
-
-        /* =========================================================
-           STATUS CARDS
-        ========================================================= */
+        /* STATUS CARDS */
 
         .status-grid {
             display: grid;
@@ -987,7 +787,7 @@
             grid-template-columns: 83px 1fr;
             align-items: center;
             padding: 15px 15px 15px 22px;
-            background: white;
+            background: #ffffff;
             border: 1px solid rgba(80, 39, 136, 0.08);
             border-radius: 14px;
             box-shadow:
@@ -1010,26 +810,15 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            color: white;
+            color: #ffffff;
             font-size: 35px;
-            background:
-                linear-gradient(
-                    135deg,
-                    color-mix(in srgb, var(--status-color) 75%, white),
-                    var(--status-color)
-                );
-            box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.12);
-        }
-
-        .status-info {
-            min-width: 0;
+            background: var(--status-color);
         }
 
         .status-label {
             margin: 0;
             font-size: 17px;
             font-weight: 500;
-            white-space: nowrap;
         }
 
         .status-number {
@@ -1060,22 +849,11 @@
             --status-color: #489d60;
         }
 
-        /* =========================================================
-           SIMPLE PAGE SECTIONS
-        ========================================================= */
-
-        .page-section {
-            display: none;
-            padding: 10px 0;
-        }
-
-        .page-section.active {
-            display: block;
-        }
+        /* OTHER PAGES */
 
         .placeholder-panel {
-            padding: 35px;
             min-height: 460px;
+            padding: 35px;
         }
 
         .placeholder-panel h2 {
@@ -1091,23 +869,18 @@
             font-size: 18px;
         }
 
-        /* =========================================================
-           MOBILE MENU BUTTON
-        ========================================================= */
-
         .mobile-menu {
             display: none;
             position: fixed;
-            z-index: 50;
             top: 16px;
             left: 16px;
+            z-index: 50;
             width: 50px;
             height: 50px;
             border: 0;
             border-radius: 12px;
-            color: white;
+            color: #ffffff;
             background: #3d197a;
-            box-shadow: 0 7px 18px rgba(32, 11, 70, 0.25);
             font-size: 23px;
         }
 
@@ -1115,22 +888,18 @@
             display: none;
         }
 
-        /* =========================================================
-           RESPONSIVE DESIGN
-        ========================================================= */
-
         @media (max-width: 1350px) {
             :root {
                 --sidebar-width: 285px;
             }
 
             .logo-area {
-                height: 305px;
+                height: 290px;
             }
 
             .logo-circle {
-                width: 310px;
-                height: 310px;
+                width: 270px;
+                height: 270px;
             }
 
             .hero-content {
@@ -1147,13 +916,9 @@
             }
 
             .door-scene {
-                right: 36px;
+                right: 25px;
                 transform: scale(0.9);
                 transform-origin: bottom right;
-            }
-
-            .branch {
-                right: 230px;
             }
 
             .status-grid {
@@ -1234,8 +999,7 @@
                 font-size: 20px;
             }
 
-            .door-scene,
-            .branch {
+            .door-scene {
                 display: none;
             }
 
@@ -1265,7 +1029,7 @@
                 font-size: 31px;
             }
 
-            .month-title .month-star {
+            .month-star {
                 display: none;
             }
 
@@ -1275,8 +1039,8 @@
             }
 
             .weekday {
-                font-size: 13px;
                 padding: 8px 1px;
+                font-size: 13px;
             }
 
             .calendar-day {
@@ -1302,35 +1066,14 @@
 
     <div class="dashboard">
 
-        <!-- =====================================================
-             LEFT SIDEBAR
-        ====================================================== -->
-
         <aside class="sidebar" id="sidebar">
 
             <div class="logo-area">
                 <div class="logo-circle">
                     <img
-                        src="logowhite.png"
+                        src="./logowhite.png"
                         alt="The Lavender Lair logo"
-                        onerror="this.style.opacity='0'; document.getElementById('logoError').style.display='block';"
                     >
-
-                    <div
-                        id="logoError"
-                        style="
-                            display:none;
-                            position:absolute;
-                            width:250px;
-                            text-align:center;
-                            color:#4b2288;
-                            font-weight:700;
-                            line-height:1.5;
-                        "
-                    >
-                        Add your logo to this folder and name it<br>
-                        <strong>logowhite.png</strong>
-                    </div>
                 </div>
             </div>
 
@@ -1417,13 +1160,7 @@
 
         </aside>
 
-        <!-- =====================================================
-             MAIN AREA
-        ====================================================== -->
-
         <main class="main">
-
-            <!-- Purple header -->
 
             <header class="hero">
 
@@ -1432,47 +1169,32 @@
                 <span class="sparkle three">✦</span>
                 <span class="sparkle four">✧</span>
                 <span class="sparkle five">✦</span>
-                <span class="sparkle six">✦</span>
-
-                <div class="branch">
-                    <div class="branch-stem"></div>
-                    <div class="branch-leaf"></div>
-                    <div class="branch-leaf"></div>
-                    <div class="branch-leaf"></div>
-                    <div class="branch-leaf"></div>
-                    <div class="branch-leaf"></div>
-                    <div class="branch-leaf"></div>
-                    <div class="branch-leaf"></div>
-                    <div class="branch-leaf"></div>
-                </div>
 
                 <div class="door-scene">
                     <div class="door-glow"></div>
-                    <div class="door-arch"></div>
-                    <div class="door-inner"></div>
+                    <div class="door-frame"></div>
+                    <div class="door-opening"></div>
                     <div class="door-panel"></div>
                     <div class="door-knob"></div>
                 </div>
 
                 <div class="hero-content">
                     <h1 class="hero-title">The Lavender Lair</h1>
-                    <p class="hero-greeting" id="greeting">Good Morning, Tasha!</p>
-                    <p class="hero-subtitle">Here is what needs your attention today.</p>
+                    <p class="hero-greeting" id="greeting">
+                        Good Morning, Tasha!
+                    </p>
+                    <p class="hero-subtitle">
+                        Here is what needs your attention today.
+                    </p>
                 </div>
 
             </header>
 
             <div class="content">
 
-                <!-- =================================================
-                     DASHBOARD PAGE
-                ================================================== -->
-
                 <section class="page-section active" id="dashboardPage">
 
                     <div class="top-grid">
-
-                        <!-- Calendar panel -->
 
                         <div class="panel calendar-panel">
 
@@ -1503,6 +1225,7 @@
                             </div>
 
                             <div class="calendar-legend">
+
                                 <div class="legend-item">
                                     <span class="legend-dot order"></span>
                                     <span>Order Due</span>
@@ -1512,6 +1235,7 @@
                                     <span class="legend-dot payment"></span>
                                     <span>Waiting for Payment</span>
                                 </div>
+
                             </div>
 
                             <div class="calendar-shell">
@@ -1532,8 +1256,6 @@
 
                         </div>
 
-                        <!-- Right panels -->
-
                         <div class="side-panels">
 
                             <div class="panel quick-panel">
@@ -1545,28 +1267,40 @@
 
                                 <div class="quick-list">
 
-                                    <button class="quick-action" data-open-page="ordersPage">
+                                    <button
+                                        class="quick-action"
+                                        data-open-page="ordersPage"
+                                    >
                                         <span class="action-icon purple">
                                             <i class="fa-regular fa-clipboard"></i>
                                         </span>
                                         <span>+ New Order</span>
                                     </button>
 
-                                    <button class="quick-action" data-open-page="customersPage">
+                                    <button
+                                        class="quick-action"
+                                        data-open-page="customersPage"
+                                    >
                                         <span class="action-icon pink">
                                             <i class="fa-solid fa-user-plus"></i>
                                         </span>
                                         <span>+ New Customer</span>
                                     </button>
 
-                                    <button class="quick-action" data-open-page="inventoryPage">
+                                    <button
+                                        class="quick-action"
+                                        data-open-page="inventoryPage"
+                                    >
                                         <span class="action-icon teal">
                                             <i class="fa-solid fa-cube"></i>
                                         </span>
                                         <span>+ Add Inventory</span>
                                     </button>
 
-                                    <button class="quick-action" data-open-page="filesPage">
+                                    <button
+                                        class="quick-action"
+                                        data-open-page="filesPage"
+                                    >
                                         <span class="action-icon blue">
                                             <i class="fa-solid fa-cloud-arrow-up"></i>
                                         </span>
@@ -1586,10 +1320,7 @@
 
                                 <div class="empty-task">
 
-                                    <div class="moon">
-                                        <span class="moon-star one">✦</span>
-                                        <span class="moon-star two">✦</span>
-                                    </div>
+                                    <div class="moon"></div>
 
                                     <p>
                                         No upcoming orders<br>
@@ -1598,7 +1329,10 @@
 
                                 </div>
 
-                                <button class="view-orders" data-open-page="ordersPage">
+                                <button
+                                    class="view-orders"
+                                    data-open-page="ordersPage"
+                                >
                                     View All Orders
                                 </button>
 
@@ -1608,65 +1342,67 @@
 
                     </div>
 
-                    <!-- Status cards -->
-
                     <div class="status-grid">
 
                         <article class="status-card payment">
+
                             <div class="status-icon">
                                 <i class="fa-solid fa-dollar-sign"></i>
                             </div>
 
-                            <div class="status-info">
+                            <div>
                                 <p class="status-label">Waiting Payment</p>
                                 <p class="status-number">0</p>
                                 <p class="status-word">Orders</p>
                             </div>
+
                         </article>
 
                         <article class="status-card approval">
+
                             <div class="status-icon">
                                 <i class="fa-solid fa-eye"></i>
                             </div>
 
-                            <div class="status-info">
+                            <div>
                                 <p class="status-label">Waiting Approval</p>
                                 <p class="status-number">0</p>
                                 <p class="status-word">Orders</p>
                             </div>
+
                         </article>
 
                         <article class="status-card progress">
+
                             <div class="status-icon">
                                 <i class="fa-solid fa-cube"></i>
                             </div>
 
-                            <div class="status-info">
+                            <div>
                                 <p class="status-label">In Progress</p>
                                 <p class="status-number">0</p>
                                 <p class="status-word">Orders</p>
                             </div>
+
                         </article>
 
                         <article class="status-card ready">
+
                             <div class="status-icon">
                                 <i class="fa-solid fa-check"></i>
                             </div>
 
-                            <div class="status-info">
+                            <div>
                                 <p class="status-label">Ready</p>
                                 <p class="status-number">0</p>
                                 <p class="status-word">Orders</p>
                             </div>
+
                         </article>
 
                     </div>
 
                 </section>
-
-                <!-- =================================================
-                     OTHER PAGE PLACEHOLDERS
-                ================================================== -->
 
                 <section class="page-section" id="calendarPage">
                     <div class="panel placeholder-panel">
@@ -1738,10 +1474,6 @@
     </div>
 
     <script>
-        /* =========================================================
-           GREETING
-        ========================================================= */
-
         function updateGreeting() {
             const hour = new Date().getHours();
             const greeting = document.getElementById("greeting");
@@ -1757,11 +1489,7 @@
 
         updateGreeting();
 
-        /* =========================================================
-           CALENDAR
-        ========================================================= */
-
-        let displayedDate = new Date(2026, 6, 1);
+        let displayedDate = new Date();
 
         const monthLabel = document.getElementById("monthLabel");
         const calendarDays = document.getElementById("calendarDays");
@@ -1781,26 +1509,6 @@
             "December"
         ];
 
-        /*
-          Add order dates here later.
-
-          Example:
-          "2026-07-22": "order"
-          "2026-07-25": "payment"
-        */
-
-        const calendarEvents = {
-            // "2026-07-22": "order",
-            // "2026-07-25": "payment"
-        };
-
-        function getDateKey(year, month, day) {
-            const paddedMonth = String(month + 1).padStart(2, "0");
-            const paddedDay = String(day).padStart(2, "0");
-
-            return `${year}-${paddedMonth}-${paddedDay}`;
-        }
-
         function renderCalendar() {
             const year = displayedDate.getFullYear();
             const month = displayedDate.getMonth();
@@ -1810,11 +1518,7 @@
 
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
-
             const today = new Date();
-            const isJulyExample =
-                year === 2026 &&
-                month === 6;
 
             for (let blank = 0; blank < firstDay; blank++) {
                 const emptyCell = document.createElement("div");
@@ -1826,28 +1530,10 @@
                 const cell = document.createElement("div");
                 const number = document.createElement("span");
 
-                number.textContent = day;
                 cell.className = "calendar-day";
+                number.textContent = day;
 
-                const dateKey = getDateKey(year, month, day);
-                const eventType = calendarEvents[dateKey];
-
-                if (eventType === "order") {
-                    cell.classList.add("has-order");
-                }
-
-                if (eventType === "payment") {
-                    cell.classList.add("has-payment");
-                }
-
-                /*
-                  The approved picture highlights July 17, 2026.
-                  This keeps that exact appearance.
-                */
-
-                if (isJulyExample && day === 17) {
-                    cell.classList.add("today");
-                } else if (
+                if (
                     day === today.getDate() &&
                     month === today.getMonth() &&
                     year === today.getFullYear()
@@ -1860,11 +1546,13 @@
             }
 
             const totalCells = firstDay + daysInMonth;
-            const remainingCells = totalCells <= 35
-                ? 35 - totalCells
-                : 42 - totalCells;
+            const targetCells = totalCells <= 35 ? 35 : 42;
 
-            for (let blank = 0; blank < remainingCells; blank++) {
+            for (
+                let blank = totalCells;
+                blank < targetCells;
+                blank++
+            ) {
                 const emptyCell = document.createElement("div");
                 emptyCell.className = "calendar-day empty";
                 calendarDays.appendChild(emptyCell);
@@ -1897,13 +1585,14 @@
 
         renderCalendar();
 
-        /* =========================================================
-           PAGE NAVIGATION
-        ========================================================= */
+        const navigationButtons =
+            document.querySelectorAll(".nav-item");
 
-        const navigationButtons = document.querySelectorAll(".nav-item");
-        const pageSections = document.querySelectorAll(".page-section");
-        const openPageButtons = document.querySelectorAll("[data-open-page]");
+        const pageSections =
+            document.querySelectorAll(".page-section");
+
+        const openPageButtons =
+            document.querySelectorAll("[data-open-page]");
 
         function openPage(pageId) {
             pageSections.forEach(function (section) {
@@ -1940,10 +1629,6 @@
             });
         });
 
-        /* =========================================================
-           MOBILE SIDEBAR
-        ========================================================= */
-
         const sidebar = document.getElementById("sidebar");
         const mobileMenu = document.getElementById("mobileMenu");
         const sidebarShade = document.getElementById("sidebarShade");
@@ -1960,14 +1645,10 @@
 
         sidebarShade.addEventListener("click", closeMobileMenu);
 
-        /* =========================================================
-           SIGN OUT PLACEHOLDER
-        ========================================================= */
-
         document
             .querySelector(".signout")
             .addEventListener("click", function () {
-                alert("Your sign-out function can be connected here later.");
+                alert("The sign-out function will be connected later.");
             });
     </script>
 
