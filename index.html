@@ -2,36 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>The Lavender Lair</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Bodoni+Moda:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@600;700&family=Italianno&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 
     <style>
         :root {
-            --deep-purple: #4f286f;
-            --main-purple: #654088;
-            --medium-purple: #805aa1;
-            --soft-purple: #d9c8e8;
-            --light-purple: #eee7f5;
-            --page-background: #f4eff8;
-            --white: #ffffff;
-            --text: #3b2858;
-            --muted-text: #756881;
-            --calendar-border: #d8cde0;
+            --header-dark: #30174f;
+            --header-main: #4f2874;
+            --header-light: #7a3f8f;
+
+            --deep-purple: #442064;
+            --main-purple: #62358a;
+            --medium-purple: #8057a3;
+
+            --lavender: #d9c8e8;
+            --light-lavender: #eee7f5;
+            --sidebar-background: #faf7fc;
+            --page-background: #f5f1f7;
+
+            --card-background: #fffdfd;
+            --text: #2f1951;
+            --muted-text: #71657c;
+            --calendar-border: #ded6e3;
+
+            --red: #ba304b;
+            --orange: #df8210;
+            --green: #438b5d;
+            --teal: #3aaeb0;
+            --blue: #537dd6;
+            --pink: #d4528e;
         }
 
         * {
             box-sizing: border-box;
         }
 
+        html,
         body {
             margin: 0;
-            min-height: 100vh;
+            min-height: 100%;
+        }
+
+        body {
             font-family: "Poppins", Arial, sans-serif;
             background: var(--page-background);
             color: var(--text);
@@ -41,79 +74,198 @@
             font-family: inherit;
         }
 
+        /* HEADER */
+
         .top-header {
-            min-height: 170px;
-            padding: 30px 45px 30px 300px;
+            position: relative;
+            min-height: 285px;
+            padding: 32px 42px 35px 390px;
+            overflow: hidden;
             color: white;
-            background: linear-gradient(
-                110deg,
-                var(--deep-purple),
-                var(--main-purple) 55%,
-                var(--medium-purple)
-            );
-            box-shadow: 0 8px 24px rgba(65, 35, 88, 0.22);
+
+            background:
+                radial-gradient(
+                    circle at 72% 45%,
+                    rgba(197, 119, 213, 0.28),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    110deg,
+                    var(--header-dark),
+                    var(--header-main) 55%,
+                    var(--header-light)
+                );
+
+            box-shadow: 0 10px 26px rgba(44, 23, 67, 0.25);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 3;
         }
 
         .top-header h1 {
             margin: 0;
             font-family: "Bodoni Moda", "Times New Roman", serif;
-            font-size: clamp(42px, 5vw, 70px);
-            line-height: 1;
-            letter-spacing: -2px;
+            font-size: clamp(48px, 6vw, 82px);
+            line-height: 0.98;
+            letter-spacing: -3px;
+            font-weight: 600;
+            color: #fffaf5;
         }
 
         .top-header h2 {
-            margin: 10px 0 0;
-            font-family: "Allura", cursive;
-            font-size: 40px;
-            font-weight: 400;
+            margin: 5px 0 0;
+            font-family: "Italianno", cursive;
+            font-size: clamp(50px, 5vw, 72px);
             line-height: 1;
+            font-weight: 400;
+            color: #fff3f8;
+            text-shadow:
+                0 0 14px rgba(255, 183, 226, 0.22);
         }
 
         .top-header p {
-            margin: 5px 0 0;
-            color: rgba(255, 255, 255, 0.78);
-            font-size: 14px;
+            margin: 7px 0 0;
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.87);
         }
 
-        .layout {
-            display: grid;
-            grid-template-columns: 255px minmax(0, 1fr);
-            min-height: calc(100vh - 170px);
+        .sparkle {
+            position: absolute;
+            z-index: 1;
+            color: #f7d8ef;
+            opacity: 0.9;
+            pointer-events: none;
         }
 
-        .sidebar {
-            position: relative;
-            padding: 0 18px 35px;
-            background: linear-gradient(
-                180deg,
-                #d8c6e7,
-                #eadff1
-            );
-            border-right: 1px solid rgba(79, 40, 111, 0.1);
+        .sparkle-one {
+            top: 38px;
+            right: 250px;
+            font-size: 28px;
         }
 
-        .logo {
-            position: relative;
+        .sparkle-two {
+            top: 85px;
+            right: 135px;
+            font-size: 17px;
+        }
+
+        .sparkle-three {
+            bottom: 45px;
+            right: 360px;
+            font-size: 21px;
+        }
+
+        .header-door {
+            position: absolute;
+            right: 70px;
+            bottom: -2px;
             z-index: 2;
-            height: 120px;
-            margin: -88px 5px 25px;
+
+            width: 145px;
+            height: 215px;
+
+            border: 12px solid rgba(224, 188, 224, 0.55);
+            border-bottom: none;
+            border-radius: 82px 82px 0 0;
+
+            background:
+                radial-gradient(
+                    circle at 50% 60%,
+                    rgba(255, 255, 255, 0.9),
+                    transparent 7%
+                ),
+                radial-gradient(
+                    circle at 42% 42%,
+                    rgba(255, 255, 255, 0.6),
+                    transparent 4%
+                ),
+                linear-gradient(
+                    180deg,
+                    #3f1d64,
+                    #7e3b91 55%,
+                    #d48cd2
+                );
+
+            box-shadow:
+                0 0 35px rgba(237, 160, 232, 0.35),
+                inset 0 0 35px rgba(255, 255, 255, 0.12);
+        }
+
+        .header-door::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .header-door::after {
+            content: "";
+            position: absolute;
+            right: 20px;
+            top: 112px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d7b068;
+            box-shadow: 0 0 8px rgba(255, 222, 149, 0.65);
+        }
+
+        /* LOGO */
+
+        .logo-wrap {
+            position: absolute;
+            z-index: 5;
+            top: 0;
+            left: 0;
+
+            width: 350px;
+            height: 365px;
+
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.96);
-            border: 2px dashed rgba(79, 40, 111, 0.28);
-            border-radius: 22px;
-            color: rgba(79, 40, 111, 0.55);
-            box-shadow: 0 12px 25px rgba(65, 35, 88, 0.14);
+
+            background: #fffdfd;
+            border-radius: 0 0 55% 0;
+            box-shadow:
+                12px 12px 28px rgba(45, 24, 65, 0.17);
         }
 
-        .logo p {
-            margin: 0;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+        .logo-wrap img {
+            display: block;
+            width: 320px;
+            height: 320px;
+            object-fit: contain;
+        }
+
+        /* MAIN LAYOUT */
+
+        .layout {
+            display: grid;
+            grid-template-columns: 330px minmax(0, 1fr);
+            min-height: calc(100vh - 285px);
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            padding: 100px 24px 30px;
+            background:
+                linear-gradient(
+                    180deg,
+                    #faf7fc,
+                    #f0e8f5
+                );
+
+            border-right: 1px solid rgba(77, 39, 111, 0.12);
+
+            box-shadow:
+                7px 0 20px rgba(55, 32, 70, 0.06);
         }
 
         .menu {
@@ -125,105 +277,204 @@
         .menu-item {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 17px;
+
             width: 100%;
-            padding: 12px 14px;
+            min-height: 55px;
+
+            padding: 11px 16px;
+
             border: none;
             border-radius: 13px;
+
             background: transparent;
-            color: #463151;
-            font-size: 14px;
-            font-weight: 600;
+            color: var(--text);
+
+            font-size: 16px;
+            font-weight: 500;
             text-align: left;
+
             cursor: pointer;
+
             transition:
-                background 0.2s ease,
-                color 0.2s ease,
-                transform 0.2s ease;
+                transform 0.18s ease,
+                background 0.18s ease,
+                color 0.18s ease;
         }
 
         .menu-item:hover {
-            background: rgba(101, 64, 136, 0.12);
+            background: rgba(98, 53, 138, 0.09);
             transform: translateX(2px);
         }
 
         .menu-item.active {
-            background: var(--main-purple);
+            background:
+                linear-gradient(
+                    100deg,
+                    #4f2874,
+                    #693c90
+                );
+
             color: white;
-            box-shadow: 0 7px 14px rgba(79, 40, 111, 0.22);
+
+            box-shadow:
+                0 8px 18px rgba(75, 35, 107, 0.23);
         }
 
         .menu-icon {
-            width: 31px;
+            width: 34px;
             flex-shrink: 0;
-            font-size: 22px;
-            text-align: center;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 24px;
         }
+
+        .dashboard-icon {
+            color: #7651a5;
+        }
+
+        .calendar-icon {
+            color: var(--blue);
+        }
+
+        .orders-icon {
+            color: #f06424;
+        }
+
+        .customers-icon {
+            color: var(--pink);
+        }
+
+        .inventory-icon {
+            color: var(--teal);
+        }
+
+        .invoices-icon {
+            color: #d99116;
+        }
+
+        .payments-icon {
+            color: var(--green);
+        }
+
+        .files-icon {
+            color: #587bd1;
+        }
+
+        .designs-icon {
+            color: #c54688;
+        }
+
+        .settings-icon {
+            color: #8057aa;
+        }
+
+        .signout-icon {
+            color: #7355a2;
+        }
+
+        .menu-item.active .menu-icon {
+            color: white;
+        }
+
+        .menu-divider {
+            height: 1px;
+            margin: 11px 12px;
+            background: #ddd1e3;
+        }
+
+        /* MAIN CONTENT */
 
         .main {
             min-width: 0;
-            padding: 30px 34px 45px;
+            padding: 24px 28px 42px;
         }
 
         .content-grid {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 280px;
-            gap: 24px;
+            grid-template-columns: minmax(0, 1fr) 365px;
+            gap: 22px;
             align-items: start;
         }
 
+        /* CARDS */
+
+        .calendar,
+        .side-card,
+        .summary-card {
+            background: var(--card-background);
+            border: 1px solid rgba(79, 40, 111, 0.11);
+
+            box-shadow:
+                0 12px 28px rgba(62, 35, 77, 0.11);
+        }
+
+        /* CALENDAR */
+
         .calendar {
             overflow: hidden;
-            background: white;
-            border: 1px solid rgba(79, 40, 111, 0.1);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(65, 35, 88, 0.13);
+            border-radius: 18px;
         }
 
         .calendar-toolbar {
             display: grid;
-            grid-template-columns: 44px 1fr 44px;
+            grid-template-columns: 52px 1fr 52px;
             align-items: center;
-            gap: 10px;
-            padding: 18px 20px 13px;
+            gap: 14px;
+            padding: 18px 20px 7px;
         }
 
         .calendar-title {
+            font-family: "Bodoni Moda", serif;
             color: var(--deep-purple);
-            font-size: 24px;
+            font-size: 31px;
             font-weight: 700;
             text-align: center;
         }
 
         .month-button {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
+
             border: none;
-            border-radius: 12px;
-            background: var(--light-purple);
+            border-radius: 11px;
+
+            background: #eadcf3;
             color: var(--deep-purple);
-            font-size: 25px;
+
+            font-size: 26px;
             cursor: pointer;
+
+            box-shadow:
+                0 5px 11px rgba(77, 39, 111, 0.12);
         }
 
         .month-button:hover {
-            background: var(--soft-purple);
+            background: #dbc2eb;
         }
 
         .calendar-legend {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            padding: 0 15px 15px;
-            color: var(--muted-text);
-            font-size: 12px;
+            gap: 27px;
+
+            padding: 3px 15px 16px;
+
+            color: var(--text);
+            font-size: 13px;
         }
 
         .legend-dot {
             display: inline-block;
-            width: 9px;
-            height: 9px;
-            margin-right: 6px;
+
+            width: 10px;
+            height: 10px;
+
+            margin-right: 7px;
+
             border-radius: 50%;
         }
 
@@ -232,12 +483,13 @@
         }
 
         .payment-dot {
-            background: #b43a4b;
+            background: var(--red);
         }
 
         .days {
             display: grid;
             grid-template-columns: repeat(7, minmax(0, 1fr));
+
             border-top: 1px solid var(--calendar-border);
             border-left: 1px solid var(--calendar-border);
         }
@@ -250,32 +502,57 @@
 
         .day-name {
             padding: 11px 5px;
-            background: var(--main-purple);
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #4e2875,
+                    #693991
+                );
+
             color: white;
-            font-size: 12px;
-            font-weight: 700;
+
+            font-size: 13px;
+            font-weight: 600;
             text-align: center;
-            text-transform: uppercase;
         }
 
         .day {
-            min-height: 98px;
-            padding: 9px;
+            min-height: 87px;
+            padding: 10px;
+
+            position: relative;
+
             background: white;
         }
 
+        .day.other-month {
+            background: #faf7fb;
+            color: #beb4c4;
+        }
+
         .day-number {
-            font-size: 13px;
-            font-weight: 700;
+            font-size: 15px;
+            font-weight: 600;
         }
 
-        .today {
-            box-shadow: inset 0 0 0 3px var(--main-purple);
+        .day.today .day-number {
+            width: 45px;
+            height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin: -3px auto 0;
+
+            border-radius: 50%;
+
+            background: #e8d6ef;
+            color: var(--deep-purple);
         }
 
-        .empty-day {
-            background: #f8f5fa;
-        }
+        /* RIGHT PANEL */
 
         .right-panel {
             display: flex;
@@ -285,95 +562,227 @@
 
         .side-card {
             padding: 20px;
-            background: white;
-            border: 1px solid rgba(79, 40, 111, 0.1);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(65, 35, 88, 0.12);
+            border-radius: 18px;
         }
 
         .side-card h3 {
-            margin: 0 0 15px;
+            margin: 0 0 14px;
+
+            font-family: "Bodoni Moda", serif;
             color: var(--deep-purple);
-            font-size: 18px;
+
+            font-size: 24px;
         }
 
         .quick-action {
             width: 100%;
-            margin-bottom: 9px;
-            padding: 11px 13px;
+            min-height: 54px;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 7px;
+            padding: 8px 13px;
+
             border: none;
             border-radius: 11px;
-            background: var(--main-purple);
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #542a79,
+                    #693c90
+                );
+
             color: white;
-            font-size: 13px;
-            font-weight: 600;
+
+            font-size: 15px;
+            font-weight: 500;
             text-align: left;
+
             cursor: pointer;
         }
 
         .quick-action:hover {
-            background: var(--deep-purple);
+            background:
+                linear-gradient(
+                    100deg,
+                    #41205f,
+                    #572d7b
+                );
+        }
+
+        .action-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            color: white;
+            font-size: 17px;
+        }
+
+        .action-order {
+            background: #8f66be;
+        }
+
+        .action-customer {
+            background: #da5a96;
+        }
+
+        .action-inventory {
+            background: #43b3af;
+        }
+
+        .action-upload {
+            background: #7588df;
+        }
+
+        .upcoming-content {
+            display: grid;
+            grid-template-columns: 62px 1fr;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .upcoming-icon {
+            color: #b483c5;
+            font-size: 42px;
+            text-align: center;
         }
 
         .side-card p {
             margin: 0;
-            color: var(--muted-text);
-            font-size: 13px;
-            line-height: 1.6;
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.55;
         }
 
         .view-orders {
             width: 100%;
-            margin-top: 15px;
+            margin-top: 16px;
             padding: 11px 13px;
+
             border: 2px solid var(--main-purple);
-            border-radius: 11px;
+            border-radius: 10px;
+
             background: transparent;
             color: var(--main-purple);
-            font-weight: 700;
+
+            font-size: 14px;
+            font-weight: 600;
+
             cursor: pointer;
         }
 
+        .view-orders:hover {
+            background: var(--light-lavender);
+        }
+
+        /* SUMMARY CARDS */
+
         .summary {
             grid-column: 1 / -1;
+
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 14px;
-            margin-top: 2px;
+            gap: 15px;
+
+            margin-top: 0;
         }
 
         .summary-card {
-            padding: 17px;
-            background: white;
+            min-height: 135px;
+
+            display: grid;
+            grid-template-columns: 68px 1fr;
+            align-items: center;
+            gap: 12px;
+
+            padding: 16px;
+
             border-radius: 15px;
-            box-shadow: 0 9px 22px rgba(65, 35, 88, 0.1);
+        }
+
+        .summary-icon {
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            color: white;
+            font-size: 28px;
+        }
+
+        .summary-card h4 {
+            margin: 0;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .summary-number {
+            margin: 2px 0 0;
+
+            color: var(--deep-purple);
+
+            font-size: 34px;
+            line-height: 1;
+            font-weight: 500;
+        }
+
+        .summary-label {
+            margin-top: 5px;
+            color: var(--text);
             font-size: 13px;
         }
 
-        .summary-card strong {
-            display: block;
-            margin: 6px 0 2px;
-            color: var(--deep-purple);
-            font-size: 22px;
+        .waiting-payment {
+            border-left: 5px solid var(--red);
         }
 
-        .waiting-payment {
-            border-left: 5px solid #b43a4b;
+        .waiting-payment .summary-icon {
+            background: var(--red);
         }
 
         .waiting-approval {
-            border-left: 5px solid #bc6a19;
+            border-left: 5px solid var(--orange);
+        }
+
+        .waiting-approval .summary-icon {
+            background: var(--orange);
         }
 
         .in-progress {
             border-left: 5px solid var(--main-purple);
         }
 
-        .ready {
-            border-left: 5px solid #36785a;
+        .in-progress .summary-icon {
+            background: var(--main-purple);
         }
 
-        @media (max-width: 1050px) {
+        .ready {
+            border-left: 5px solid var(--green);
+        }
+
+        .ready .summary-icon {
+            background: var(--green);
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1180px) {
             .content-grid {
                 grid-template-columns: 1fr;
             }
@@ -384,10 +793,70 @@
             }
         }
 
-        @media (max-width: 800px) {
+        @media (max-width: 900px) {
+            .top-header {
+                min-height: 230px;
+                padding:
+                    30px
+                    25px
+                    30px
+                    280px;
+            }
+
+            .logo-wrap {
+                width: 260px;
+                height: 300px;
+            }
+
+            .logo-wrap img {
+                width: 245px;
+                height: 245px;
+            }
+
+            .header-door {
+                display: none;
+            }
+
+            .layout {
+                grid-template-columns: 255px minmax(0, 1fr);
+            }
+
+            .sidebar {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .summary {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 720px) {
             .top-header {
                 min-height: auto;
-                padding: 26px 22px;
+                padding: 245px 22px 27px;
+                text-align: center;
+            }
+
+            .logo-wrap {
+                width: 100%;
+                height: 230px;
+
+                border-radius: 0 0 35px 35px;
+            }
+
+            .logo-wrap img {
+                width: 215px;
+                height: 215px;
+            }
+
+            .top-header h1 {
+                font-size: 45px;
+                letter-spacing: -2px;
+            }
+
+            .top-header h2 {
+                font-size: 50px;
             }
 
             .layout {
@@ -395,11 +864,7 @@
             }
 
             .sidebar {
-                padding: 15px;
-            }
-
-            .logo {
-                display: none;
+                padding: 16px;
             }
 
             .menu {
@@ -407,8 +872,13 @@
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
+            .menu-item {
+                min-height: 49px;
+                font-size: 13px;
+            }
+
             .main {
-                padding: 18px 12px 35px;
+                padding: 16px 10px 32px;
             }
 
             .right-panel,
@@ -416,8 +886,26 @@
                 grid-template-columns: 1fr;
             }
 
+            .calendar-toolbar {
+                grid-template-columns: 42px 1fr 42px;
+            }
+
+            .month-button {
+                width: 40px;
+                height: 40px;
+            }
+
+            .calendar-title {
+                font-size: 24px;
+            }
+
             .day {
-                min-height: 75px;
+                min-height: 65px;
+                padding: 7px;
+            }
+
+            .day-name {
+                font-size: 11px;
             }
         }
     </style>
@@ -426,77 +914,129 @@
 <body>
 
     <header class="top-header">
-        <h1>The Lavender Lair</h1>
-        <h2>Good Morning, Tasha!</h2>
-        <p>Here is what needs your attention today.</p>
+
+        <div class="logo-wrap">
+            <img
+                src="logo.png"
+                alt="The Lavender Lair logo"
+            >
+        </div>
+
+        <div class="header-content">
+            <h1>The Lavender Lair</h1>
+
+            <h2>Good Morning, Tasha!</h2>
+
+            <p>
+                Here is what needs your attention today.
+            </p>
+        </div>
+
+        <span class="sparkle sparkle-one">✦</span>
+        <span class="sparkle sparkle-two">✧</span>
+        <span class="sparkle sparkle-three">✦</span>
+
+        <div class="header-door"></div>
+
     </header>
 
     <div class="layout">
 
         <aside class="sidebar">
 
-            <div class="logo">
-                <p>Your Logo Here</p>
-            </div>
-
-            <div class="menu">
+            <nav class="menu">
 
                 <button class="menu-item active">
-                    <span class="menu-icon">🏠</span>
+                    <span class="menu-icon dashboard-icon">
+                        <i class="fa-solid fa-house"></i>
+                    </span>
+
                     <span>Dashboard</span>
                 </button>
 
                 <button class="menu-item">
-                    <span class="menu-icon">📅</span>
+                    <span class="menu-icon calendar-icon">
+                        <i class="fa-regular fa-calendar-days"></i>
+                    </span>
+
                     <span>Calendar</span>
                 </button>
 
                 <button class="menu-item">
-                    <span class="menu-icon">📝</span>
+                    <span class="menu-icon orders-icon">
+                        <i class="fa-regular fa-clipboard"></i>
+                    </span>
+
                     <span>Orders</span>
                 </button>
 
                 <button class="menu-item">
-                    <span class="menu-icon">👤</span>
+                    <span class="menu-icon customers-icon">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+
                     <span>Customers</span>
                 </button>
 
                 <button class="menu-item">
-                    <span class="menu-icon">📦</span>
+                    <span class="menu-icon inventory-icon">
+                        <i class="fa-solid fa-cube"></i>
+                    </span>
+
                     <span>Inventory</span>
                 </button>
 
                 <button class="menu-item">
-                    <span class="menu-icon">🧾</span>
+                    <span class="menu-icon invoices-icon">
+                        <i class="fa-regular fa-receipt"></i>
+                    </span>
+
                     <span>Invoices</span>
                 </button>
 
                 <button class="menu-item">
-                    <span class="menu-icon">💰</span>
+                    <span class="menu-icon payments-icon">
+                        <i class="fa-regular fa-circle-dollar-to-slot"></i>
+                    </span>
+
                     <span>Payments</span>
                 </button>
 
                 <button class="menu-item">
-                    <span class="menu-icon">📁</span>
+                    <span class="menu-icon files-icon">
+                        <i class="fa-regular fa-folder"></i>
+                    </span>
+
                     <span>Files</span>
                 </button>
 
                 <button class="menu-item">
-                    <span class="menu-icon">🎨</span>
+                    <span class="menu-icon designs-icon">
+                        <i class="fa-solid fa-palette"></i>
+                    </span>
+
                     <span>Designs</span>
                 </button>
 
                 <button class="menu-item">
-                    <span class="menu-icon">⚙️</span>
+                    <span class="menu-icon settings-icon">
+                        <i class="fa-solid fa-gear"></i>
+                    </span>
+
                     <span>Settings</span>
                 </button>
 
+                <div class="menu-divider"></div>
+
                 <button class="menu-item">
-                    <span class="menu-icon">🚪</span>
+                    <span class="menu-icon signout-icon">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    </span>
+
                     <span>Sign Out</span>
                 </button>
 
-            </div>
+            </nav>
 
         </aside>
 
@@ -507,16 +1047,32 @@
                 <section class="calendar">
 
                     <div class="calendar-toolbar">
-                        <button class="month-button">‹</button>
 
-                        <div class="calendar-title">
-                            July 2026
-                        </div>
+                        <button
+                            class="month-button"
+                            id="previousMonth"
+                            aria-label="Previous month"
+                        >
+                            ‹
+                        </button>
 
-                        <button class="month-button">›</button>
+                        <div
+                            class="calendar-title"
+                            id="calendarTitle"
+                        ></div>
+
+                        <button
+                            class="month-button"
+                            id="nextMonth"
+                            aria-label="Next month"
+                        >
+                            ›
+                        </button>
+
                     </div>
 
                     <div class="calendar-legend">
+
                         <span>
                             <span class="legend-dot due-dot"></span>
                             Order Due
@@ -526,111 +1082,145 @@
                             <span class="legend-dot payment-dot"></span>
                             Waiting for Payment
                         </span>
-                    </div>
-
-                    <div class="days">
-
-                        <div class="day-name">Sun</div>
-                        <div class="day-name">Mon</div>
-                        <div class="day-name">Tue</div>
-                        <div class="day-name">Wed</div>
-                        <div class="day-name">Thu</div>
-                        <div class="day-name">Fri</div>
-                        <div class="day-name">Sat</div>
-
-                        <div class="day empty-day"></div>
-                        <div class="day empty-day"></div>
-                        <div class="day empty-day"></div>
-
-                        <div class="day"><div class="day-number">1</div></div>
-                        <div class="day"><div class="day-number">2</div></div>
-                        <div class="day"><div class="day-number">3</div></div>
-                        <div class="day"><div class="day-number">4</div></div>
-
-                        <div class="day"><div class="day-number">5</div></div>
-                        <div class="day"><div class="day-number">6</div></div>
-                        <div class="day"><div class="day-number">7</div></div>
-                        <div class="day"><div class="day-number">8</div></div>
-                        <div class="day"><div class="day-number">9</div></div>
-                        <div class="day"><div class="day-number">10</div></div>
-                        <div class="day"><div class="day-number">11</div></div>
-
-                        <div class="day"><div class="day-number">12</div></div>
-                        <div class="day"><div class="day-number">13</div></div>
-                        <div class="day"><div class="day-number">14</div></div>
-                        <div class="day"><div class="day-number">15</div></div>
-                        <div class="day"><div class="day-number">16</div></div>
-                        <div class="day today"><div class="day-number">17</div></div>
-                        <div class="day"><div class="day-number">18</div></div>
-
-                        <div class="day"><div class="day-number">19</div></div>
-                        <div class="day"><div class="day-number">20</div></div>
-                        <div class="day"><div class="day-number">21</div></div>
-                        <div class="day"><div class="day-number">22</div></div>
-                        <div class="day"><div class="day-number">23</div></div>
-                        <div class="day"><div class="day-number">24</div></div>
-                        <div class="day"><div class="day-number">25</div></div>
-
-                        <div class="day"><div class="day-number">26</div></div>
-                        <div class="day"><div class="day-number">27</div></div>
-                        <div class="day"><div class="day-number">28</div></div>
-                        <div class="day"><div class="day-number">29</div></div>
-                        <div class="day"><div class="day-number">30</div></div>
-                        <div class="day"><div class="day-number">31</div></div>
-                        <div class="day empty-day"></div>
 
                     </div>
+
+                    <div
+                        class="days"
+                        id="calendarDays"
+                    ></div>
 
                 </section>
 
                 <aside class="right-panel">
 
                     <section class="side-card">
+
                         <h3>Quick Actions</h3>
 
-                        <button class="quick-action">＋ New Order</button>
-                        <button class="quick-action">＋ New Customer</button>
-                        <button class="quick-action">＋ Add Inventory</button>
-                        <button class="quick-action">＋ Upload File</button>
+                        <button class="quick-action">
+
+                            <span class="action-icon action-order">
+                                <i class="fa-regular fa-clipboard"></i>
+                            </span>
+
+                            <span>＋ New Order</span>
+
+                        </button>
+
+                        <button class="quick-action">
+
+                            <span class="action-icon action-customer">
+                                <i class="fa-solid fa-user-plus"></i>
+                            </span>
+
+                            <span>＋ New Customer</span>
+
+                        </button>
+
+                        <button class="quick-action">
+
+                            <span class="action-icon action-inventory">
+                                <i class="fa-solid fa-cube"></i>
+                            </span>
+
+                            <span>＋ Add Inventory</span>
+
+                        </button>
+
+                        <button class="quick-action">
+
+                            <span class="action-icon action-upload">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                            </span>
+
+                            <span>＋ Upload File</span>
+
+                        </button>
+
                     </section>
 
                     <section class="side-card">
+
                         <h3>Upcoming Tasks</h3>
 
-                        <p>No upcoming orders have been added yet.</p>
+                        <div class="upcoming-content">
+
+                            <div class="upcoming-icon">
+                                <i class="fa-solid fa-moon"></i>
+                            </div>
+
+                            <p>
+                                No upcoming orders have been added yet.
+                            </p>
+
+                        </div>
 
                         <button class="view-orders">
                             View All Orders
                         </button>
+
                     </section>
 
                 </aside>
 
                 <section class="summary">
 
-                    <div class="summary-card waiting-payment">
-                        💰 Waiting Payment
-                        <strong>0</strong>
-                        Orders
-                    </div>
+                    <article class="summary-card waiting-payment">
 
-                    <div class="summary-card waiting-approval">
-                        👀 Waiting Approval
-                        <strong>0</strong>
-                        Orders
-                    </div>
+                        <div class="summary-icon">
+                            <i class="fa-solid fa-dollar-sign"></i>
+                        </div>
 
-                    <div class="summary-card in-progress">
-                        📦 In Progress
-                        <strong>0</strong>
-                        Orders
-                    </div>
+                        <div>
+                            <h4>Waiting Payment</h4>
+                            <div class="summary-number">0</div>
+                            <div class="summary-label">Orders</div>
+                        </div>
 
-                    <div class="summary-card ready">
-                        ✅ Ready
-                        <strong>0</strong>
-                        Orders
-                    </div>
+                    </article>
+
+                    <article class="summary-card waiting-approval">
+
+                        <div class="summary-icon">
+                            <i class="fa-regular fa-eye"></i>
+                        </div>
+
+                        <div>
+                            <h4>Waiting Approval</h4>
+                            <div class="summary-number">0</div>
+                            <div class="summary-label">Orders</div>
+                        </div>
+
+                    </article>
+
+                    <article class="summary-card in-progress">
+
+                        <div class="summary-icon">
+                            <i class="fa-solid fa-cube"></i>
+                        </div>
+
+                        <div>
+                            <h4>In Progress</h4>
+                            <div class="summary-number">0</div>
+                            <div class="summary-label">Orders</div>
+                        </div>
+
+                    </article>
+
+                    <article class="summary-card ready">
+
+                        <div class="summary-icon">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                        <div>
+                            <h4>Ready</h4>
+                            <div class="summary-number">0</div>
+                            <div class="summary-label">Orders</div>
+                        </div>
+
+                    </article>
 
                 </section>
 
@@ -639,6 +1229,139 @@
         </main>
 
     </div>
+
+    <script>
+        const calendarTitle =
+            document.getElementById("calendarTitle");
+
+        const calendarDays =
+            document.getElementById("calendarDays");
+
+        const previousMonthButton =
+            document.getElementById("previousMonth");
+
+        const nextMonthButton =
+            document.getElementById("nextMonth");
+
+        let displayedDate = new Date();
+
+        displayedDate.setDate(1);
+
+        const weekdays = [
+            "Sun",
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat"
+        ];
+
+        function dateKey(date) {
+            return [
+                date.getFullYear(),
+                String(date.getMonth() + 1).padStart(2, "0"),
+                String(date.getDate()).padStart(2, "0")
+            ].join("-");
+        }
+
+        function renderCalendar() {
+            calendarDays.innerHTML = "";
+
+            weekdays.forEach(function (weekday) {
+                const weekdayCell =
+                    document.createElement("div");
+
+                weekdayCell.className = "day-name";
+                weekdayCell.textContent = weekday;
+
+                calendarDays.appendChild(weekdayCell);
+            });
+
+            calendarTitle.textContent =
+                displayedDate.toLocaleDateString(
+                    "en-US",
+                    {
+                        month: "long",
+                        year: "numeric"
+                    }
+                );
+
+            const year = displayedDate.getFullYear();
+            const month = displayedDate.getMonth();
+
+            const firstDayOfMonth =
+                new Date(year, month, 1);
+
+            const startingCell =
+                new Date(year, month, 1);
+
+            startingCell.setDate(
+                1 - firstDayOfMonth.getDay()
+            );
+
+            const todayKey = dateKey(new Date());
+
+            for (let cellNumber = 0;
+                 cellNumber < 42;
+                 cellNumber += 1) {
+
+                const cellDate =
+                    new Date(startingCell);
+
+                cellDate.setDate(
+                    startingCell.getDate() + cellNumber
+                );
+
+                const dayCell =
+                    document.createElement("div");
+
+                dayCell.className = "day";
+
+                if (cellDate.getMonth() !== month) {
+                    dayCell.classList.add("other-month");
+                }
+
+                if (dateKey(cellDate) === todayKey) {
+                    dayCell.classList.add("today");
+                }
+
+                const dayNumber =
+                    document.createElement("div");
+
+                dayNumber.className = "day-number";
+                dayNumber.textContent =
+                    cellDate.getDate();
+
+                dayCell.appendChild(dayNumber);
+                calendarDays.appendChild(dayCell);
+            }
+        }
+
+        previousMonthButton.addEventListener(
+            "click",
+            function () {
+                displayedDate.setMonth(
+                    displayedDate.getMonth() - 1
+                );
+
+                renderCalendar();
+            }
+        );
+
+        nextMonthButton.addEventListener(
+            "click",
+            function () {
+                displayedDate.setMonth(
+                    displayedDate.getMonth() + 1
+                );
+
+                renderCalendar();
+            }
+        );
+
+        renderCalendar();
+    </script>
 
 </body>
 </html>
