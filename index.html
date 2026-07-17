@@ -1,240 +1,745 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>The Lavender Lair</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #eee8f7;
-    color: #3b2858;
-}
+    <title>The Lavender Lair</title>
 
-.layout {
-    display: flex;
-    min-height: 100vh;
-}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-/* Sidebar */
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-.sidebar {
-    width: 230px;
-    background: #5a347d;
-    color: white;
-    padding: 25px;
-}
+    <style>
+        :root {
+            --deep-purple: #4f286f;
+            --main-purple: #654088;
+            --medium-purple: #805aa1;
+            --soft-purple: #d9c8e8;
+            --light-purple: #eee7f5;
+            --page-background: #f4eff8;
+            --white: #ffffff;
+            --text: #3b2858;
+            --muted-text: #756881;
+            --calendar-border: #d8cde0;
+        }
 
-.logo {
-    height: 100px;
-    background: rgba(255,255,255,.15);
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 30px;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-.logo p {
-    opacity: .8;
-}
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Poppins", Arial, sans-serif;
+            background: var(--page-background);
+            color: var(--text);
+        }
 
-.menu div {
-    padding: 14px 10px;
-    border-radius: 10px;
-    margin-bottom: 5px;
-    cursor: pointer;
-}
+        button {
+            font-family: inherit;
+        }
 
-.menu div:hover {
-    background: rgba(255,255,255,.15);
-}
+        /* Full-width header */
 
+        .top-header {
+            min-height: 170px;
+            padding: 30px 45px 30px 300px;
+            color: white;
+            background:
+                linear-gradient(
+                    110deg,
+                    var(--deep-purple),
+                    var(--main-purple) 55%,
+                    var(--medium-purple)
+                );
+            box-shadow: 0 8px 24px rgba(65, 35, 88, 0.22);
+        }
 
-/* Main area */
+        .top-header h1 {
+            margin: 0;
+            font-family: "Bodoni Moda", "Times New Roman", serif;
+            font-size: clamp(42px, 5vw, 70px);
+            line-height: 1;
+            letter-spacing: -2px;
+        }
 
-.main {
-    flex: 1;
-    padding: 35px;
-}
+        .top-header h2 {
+            margin: 17px 0 2px;
+            font-size: 18px;
+            font-weight: 700;
+        }
 
-h1 {
-    color: #5a347d;
-}
+        .top-header p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 14px;
+        }
 
+        /* Main layout */
 
-/* Calendar */
+        .layout {
+            display: grid;
+            grid-template-columns: 255px minmax(0, 1fr);
+            min-height: calc(100vh - 170px);
+        }
 
-.calendar {
-    margin-top: 30px;
-    background: white;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(60,40,90,.15);
-}
+        /* Sidebar */
 
-.calendar-title {
-    padding: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    background: #d9c7ee;
-}
+        .sidebar {
+            position: relative;
+            padding: 0 18px 35px;
+            background:
+                linear-gradient(
+                    180deg,
+                    #d8c6e7,
+                    #eadff1
+                );
+            border-right: 1px solid rgba(79, 40, 111, 0.1);
+        }
 
+        .logo {
+            position: relative;
+            z-index: 2;
+            height: 120px;
+            margin: -88px 5px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.96);
+            border: 2px dashed rgba(79, 40, 111, 0.28);
+            border-radius: 22px;
+            color: rgba(79, 40, 111, 0.55);
+            box-shadow: 0 12px 25px rgba(65, 35, 88, 0.14);
+        }
 
-.days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-}
+        .logo p {
+            margin: 0;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-.day-name {
-    background: #5a347d;
-    color: white;
-    padding: 12px;
-    text-align: center;
-}
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
 
-.day {
-    min-height: 90px;
-    border: 1px solid #ddd;
-    padding: 8px;
-    background: white;
-}
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            padding: 12px 14px;
+            border: none;
+            border-radius: 13px;
+            background: transparent;
+            color: #463151;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
 
-.day-number {
-    font-weight: bold;
-}
+        .menu-item:hover {
+            background: rgba(101, 64, 136, 0.12);
+            transform: translateX(2px);
+        }
 
+        .menu-item.active {
+            background: var(--main-purple);
+            color: white;
+            box-shadow: 0 7px 14px rgba(79, 40, 111, 0.22);
+        }
 
-/* Bottom info */
+        .menu-icon {
+            width: 31px;
+            flex-shrink: 0;
+            font-size: 22px;
+            text-align: center;
+        }
 
-.summary {
-    margin-top: 25px;
-    display: flex;
-    gap: 20px;
-}
+        /* Main content */
 
-.summary div {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    flex: 1;
-}
+        .main {
+            min-width: 0;
+            padding: 30px 34px 45px;
+        }
 
-</style>
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 280px;
+            gap: 24px;
+            align-items: start;
+        }
 
+        /* Calendar */
+
+        .calendar {
+            overflow: hidden;
+            background: white;
+            border: 1px solid rgba(79, 40, 111, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(65, 35, 88, 0.13);
+        }
+
+        .calendar-toolbar {
+            display: grid;
+            grid-template-columns: 44px 1fr 44px;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 20px 13px;
+        }
+
+        .calendar-title {
+            color: var(--deep-purple);
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .month-button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 12px;
+            background: var(--light-purple);
+            color: var(--deep-purple);
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .month-button:hover {
+            background: var(--soft-purple);
+        }
+
+        .calendar-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 15px 15px;
+            color: var(--muted-text);
+            font-size: 12px;
+        }
+
+        .legend-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            margin-right: 6px;
+            border-radius: 50%;
+        }
+
+        .due-dot {
+            background: var(--main-purple);
+        }
+
+        .payment-dot {
+            background: #b43a4b;
+        }
+
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            border-top: 1px solid var(--calendar-border);
+            border-left: 1px solid var(--calendar-border);
+        }
+
+        .day-name,
+        .day {
+            border-right: 1px solid var(--calendar-border);
+            border-bottom: 1px solid var(--calendar-border);
+        }
+
+        .day-name {
+            padding: 11px 5px;
+            background: var(--main-purple);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .day {
+            min-height: 98px;
+            padding: 9px;
+            background: white;
+        }
+
+        .day-number {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .today {
+            box-shadow: inset 0 0 0 3px var(--main-purple);
+        }
+
+        .empty-day {
+            background: #f8f5fa;
+        }
+
+        /* Right side */
+
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .side-card {
+            padding: 20px;
+            background: white;
+            border: 1px solid rgba(79, 40, 111, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(65, 35, 88, 0.12);
+        }
+
+        .side-card h3 {
+            margin: 0 0 15px;
+            color: var(--deep-purple);
+            font-size: 18px;
+        }
+
+        .quick-action {
+            width: 100%;
+            margin-bottom: 9px;
+            padding: 11px 13px;
+            border: none;
+            border-radius: 11px;
+            background: var(--main-purple);
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .quick-action:hover {
+            background: var(--deep-purple);
+        }
+
+        .side-card p {
+            margin: 0;
+            color: var(--muted-text);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .view-orders {
+            width: 100%;
+            margin-top: 15px;
+            padding: 11px 13px;
+            border: 2px solid var(--main-purple);
+            border-radius: 11px;
+            background: transparent;
+            color: var(--main-purple);
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Bottom status cards */
+
+        .summary {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 2px;
+        }
+
+        .summary-card {
+            padding: 17px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 9px 22px rgba(65, 35, 88, 0.1);
+            font-size: 13px;
+        }
+
+        .summary-card strong {
+            display: block;
+            margin: 6px 0 2px;
+            color: var(--deep-purple);
+            font-size: 22px;
+        }
+
+        .waiting-payment {
+            border-left: 5px solid #b43a4b;
+        }
+
+        .waiting-approval {
+            border-left: 5px solid #bc6a19;
+        }
+
+        .in-progress {
+            border-left: 5px solid var(--main-purple);
+        }
+
+        .ready {
+            border-left: 5px solid #36785a;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 1050px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .right-panel {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 800px) {
+            .top-header {
+                min-height: auto;
+                padding: 26px 22px;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                padding: 15px;
+            }
+
+            .logo {
+                display: none;
+            }
+
+            .menu {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .main {
+                padding: 18px 12px 35px;
+            }
+
+            .right-panel,
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .day {
+                min-height: 75px;
+            }
+        }
+    </style>
 </head>
-
 
 <body>
 
-<div class="layout">
+    <header class="top-header">
+        <h1>The Lavender Lair</h1>
+        <h2>Good Morning, Tasha!</h2>
+        <p>Here is what needs your attention today.</p>
+    </header>
 
+    <div class="layout">
 
-<div class="sidebar">
+        <aside class="sidebar">
 
-<div class="logo">
-<p>Your Logo Here</p>
-</div>
+            <div class="logo">
+                <p>Your Logo Here</p>
+            </div>
 
+            <div class="menu">
 
-<div class="menu">
-<div>🏠 Dashboard</div>
-<div>📅 Calendar</div>
-<div>📝 Orders</div>
-<div>👥 Customers</div>
-<div>📦 Inventory</div>
-<div>🖼 Designs</div>
-<div>💰 Payments</div>
-<div>📁 Files</div>
-<div>⚙ Settings</div>
-</div>
+                <button class="menu-item active">
+                    <span class="menu-icon">🏠</span>
+                    <span>Dashboard</span>
+                </button>
 
-</div>
+                <button class="menu-item">
+                    <span class="menu-icon">📅</span>
+                    <span>Calendar</span>
+                </button>
 
+                <button class="menu-item">
+                    <span class="menu-icon">📝</span>
+                    <span>Orders</span>
+                </button>
 
+                <button class="menu-item">
+                    <span class="menu-icon">👤</span>
+                    <span>Customers</span>
+                </button>
 
-<div class="main">
+                <button class="menu-item">
+                    <span class="menu-icon">📦</span>
+                    <span>Inventory</span>
+                </button>
 
-<h1>Good Morning, Tasha</h1>
-<p>Here is what needs your attention today.</p>
+                <button class="menu-item">
+                    <span class="menu-icon">🎨</span>
+                    <span>Designs</span>
+                </button>
 
+                <button class="menu-item">
+                    <span class="menu-icon">💰</span>
+                    <span>Payments</span>
+                </button>
 
-<div class="calendar">
+                <button class="menu-item">
+                    <span class="menu-icon">📁</span>
+                    <span>Files</span>
+                </button>
 
-<div class="calendar-title">
-July 2026
-</div>
+                <button class="menu-item">
+                    <span class="menu-icon">⚙️</span>
+                    <span>Settings</span>
+                </button>
 
+                <button class="menu-item">
+                    <span class="menu-icon">🚪</span>
+                    <span>Sign Out</span>
+                </button>
 
-<div class="days">
+            </div>
 
-<div class="day-name">Sun</div>
-<div class="day-name">Mon</div>
-<div class="day-name">Tue</div>
-<div class="day-name">Wed</div>
-<div class="day-name">Thu</div>
-<div class="day-name">Fri</div>
-<div class="day-name">Sat</div>
+        </aside>
 
+        <main class="main">
 
-<div class="day"><div class="day-number">1</div></div>
-<div class="day"><div class="day-number">2</div></div>
-<div class="day"><div class="day-number">3</div></div>
-<div class="day"><div class="day-number">4</div></div>
-<div class="day"><div class="day-number">5</div></div>
-<div class="day"><div class="day-number">6</div></div>
-<div class="day"><div class="day-number">7</div></div>
+            <div class="content-grid">
 
+                <section class="calendar">
 
-<div class="day"><div class="day-number">8</div></div>
-<div class="day"><div class="day-number">9</div></div>
-<div class="day"><div class="day-number">10</div></div>
-<div class="day"><div class="day-number">11</div></div>
-<div class="day"><div class="day-number">12</div></div>
-<div class="day"><div class="day-number">13</div></div>
-<div class="day"><div class="day-number">14</div></div>
+                    <div class="calendar-toolbar">
+                        <button class="month-button">‹</button>
 
+                        <div class="calendar-title">
+                            July 2026
+                        </div>
 
-<div class="day"><div class="day-number">15</div></div>
-<div class="day"><div class="day-number">16</div></div>
-<div class="day"><div class="day-number">17</div></div>
-<div class="day"><div class="day-number">18</div></div>
-<div class="day"><div class="day-number">19</div></div>
-<div class="day"><div class="day-number">20</div></div>
-<div class="day"><div class="day-number">21</div></div>
+                        <button class="month-button">›</button>
+                    </div>
 
+                    <div class="calendar-legend">
+                        <span>
+                            <span class="legend-dot due-dot"></span>
+                            Order Due
+                        </span>
 
-</div>
-</div>
+                        <span>
+                            <span class="legend-dot payment-dot"></span>
+                            Waiting for Payment
+                        </span>
+                    </div>
 
+                    <div class="days">
 
-<div class="summary">
+                        <div class="day-name">Sun</div>
+                        <div class="day-name">Mon</div>
+                        <div class="day-name">Tue</div>
+                        <div class="day-name">Wed</div>
+                        <div class="day-name">Thu</div>
+                        <div class="day-name">Fri</div>
+                        <div class="day-name">Sat</div>
 
-<div>
-💰 Waiting Payment
-<br>
-0 Orders
-</div>
+                        <div class="day empty-day"></div>
+                        <div class="day empty-day"></div>
+                        <div class="day empty-day"></div>
 
-<div>
-👀 Waiting Approval
-<br>
-0 Orders
-</div>
+                        <div class="day">
+                            <div class="day-number">1</div>
+                        </div>
 
-<div>
-📦 In Progress
-<br>
-0 Orders
-</div>
+                        <div class="day">
+                            <div class="day-number">2</div>
+                        </div>
 
-</div>
+                        <div class="day">
+                            <div class="day-number">3</div>
+                        </div>
 
+                        <div class="day">
+                            <div class="day-number">4</div>
+                        </div>
 
-</div>
+                        <div class="day">
+                            <div class="day-number">5</div>
+                        </div>
 
+                        <div class="day">
+                            <div class="day-number">6</div>
+                        </div>
 
-</div>
+                        <div class="day">
+                            <div class="day-number">7</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">8</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">9</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">10</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">11</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">12</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">13</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">14</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">15</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">16</div>
+                        </div>
+
+                        <div class="day today">
+                            <div class="day-number">17</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">18</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">19</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">20</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">21</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">22</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">23</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">24</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">25</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">26</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">27</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">28</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">29</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">30</div>
+                        </div>
+
+                        <div class="day">
+                            <div class="day-number">31</div>
+                        </div>
+
+                        <div class="day empty-day"></div>
+                    </div>
+
+                </section>
+
+                <aside class="right-panel">
+
+                    <section class="side-card">
+                        <h3>Quick Actions</h3>
+
+                        <button class="quick-action">＋ New Order</button>
+                        <button class="quick-action">＋ New Customer</button>
+                        <button class="quick-action">＋ Add Inventory</button>
+                        <button class="quick-action">＋ Upload File</button>
+                    </section>
+
+                    <section class="side-card">
+                        <h3>Upcoming Tasks</h3>
+
+                        <p>
+                            No upcoming orders have been added yet.
+                        </p>
+
+                        <button class="view-orders">
+                            View All Orders
+                        </button>
+                    </section>
+
+                </aside>
+
+                <section class="summary">
+
+                    <div class="summary-card waiting-payment">
+                        💰 Waiting Payment
+                        <strong>0</strong>
+                        Orders
+                    </div>
+
+                    <div class="summary-card waiting-approval">
+                        👀 Waiting Approval
+                        <strong>0</strong>
+                        Orders
+                    </div>
+
+                    <div class="summary-card in-progress">
+                        📦 In Progress
+                        <strong>0</strong>
+                        Orders
+                    </div>
+
+                    <div class="summary-card ready">
+                        ✅ Ready
+                        <strong>0</strong>
+                        Orders
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
 
 </body>
 </html>
