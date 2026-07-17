@@ -12,9 +12,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
     <link
         href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@600;700&family=Italianno&family=Poppins:wght@400;500;600;700&display=swap"
@@ -28,26 +30,25 @@
 
     <style>
         :root {
-            --header-dark: #30174f;
-            --header-main: #4f2874;
-            --header-light: #7a3f8f;
+            --header-dark: #2e164d;
+            --header-main: #4c2771;
+            --header-light: #7c438d;
 
-            --deep-purple: #442064;
+            --deep-purple: #40205f;
             --main-purple: #62358a;
             --medium-purple: #8057a3;
 
-            --lavender: #d9c8e8;
             --light-lavender: #eee7f5;
-            --sidebar-background: #faf7fc;
             --page-background: #f5f1f7;
-
+            --sidebar-background: #faf7fc;
             --card-background: #fffdfd;
-            --text: #2f1951;
+
+            --text: #2e1950;
             --muted-text: #71657c;
             --calendar-border: #ded6e3;
 
             --red: #ba304b;
-            --orange: #df8210;
+            --orange: #e4830d;
             --green: #438b5d;
             --teal: #3aaeb0;
             --blue: #537dd6;
@@ -79,20 +80,20 @@
         .top-header {
             position: relative;
             min-height: 285px;
-            padding: 32px 42px 35px 390px;
+            padding: 32px 330px 35px 390px;
             overflow: hidden;
             color: white;
 
             background:
                 radial-gradient(
-                    circle at 72% 45%,
-                    rgba(197, 119, 213, 0.28),
-                    transparent 30%
+                    circle at 67% 50%,
+                    rgba(207, 119, 213, 0.24),
+                    transparent 32%
                 ),
                 linear-gradient(
                     110deg,
                     var(--header-dark),
-                    var(--header-main) 55%,
+                    var(--header-main) 54%,
                     var(--header-light)
                 );
 
@@ -101,7 +102,7 @@
 
         .header-content {
             position: relative;
-            z-index: 3;
+            z-index: 4;
         }
 
         .top-header h1 {
@@ -112,6 +113,7 @@
             letter-spacing: -3px;
             font-weight: 600;
             color: #fffaf5;
+            white-space: nowrap;
         }
 
         .top-header h2 {
@@ -121,64 +123,144 @@
             line-height: 1;
             font-weight: 400;
             color: #fff3f8;
-            text-shadow:
-                0 0 14px rgba(255, 183, 226, 0.22);
+            text-shadow: 0 0 14px rgba(255, 183, 226, 0.22);
         }
 
         .top-header p {
-            margin: 7px 0 0;
+            margin: 8px 0 0;
             font-size: 17px;
             color: rgba(255, 255, 255, 0.87);
         }
 
-        .sparkle {
+        /* LOGO */
+
+        .logo-wrap {
+            position: absolute;
+            z-index: 6;
+            top: 0;
+            left: 0;
+
+            width: 350px;
+            height: 365px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #fffdfd;
+            border-radius: 0 0 55% 0;
+
+            box-shadow:
+                12px 12px 28px rgba(45, 24, 65, 0.17);
+        }
+
+        .logo-wrap img {
+            display: block;
+            width: 320px;
+            height: 320px;
+            object-fit: contain;
+        }
+
+        /* HEADER STARS */
+
+        .header-star {
+            position: absolute;
+            z-index: 2;
+            color: #f5d5ed;
+            pointer-events: none;
+            text-shadow: 0 0 12px rgba(255, 210, 244, 0.4);
+        }
+
+        .star-one {
+            top: 25px;
+            right: 265px;
+            font-size: 27px;
+        }
+
+        .star-two {
+            top: 50px;
+            right: 180px;
+            font-size: 14px;
+        }
+
+        .star-three {
+            top: 115px;
+            right: 310px;
+            font-size: 18px;
+        }
+
+        .star-four {
+            bottom: 52px;
+            right: 355px;
+            font-size: 23px;
+        }
+
+        .star-five {
+            top: 30px;
+            left: 68%;
+            font-size: 13px;
+        }
+
+        /* WISPY FOLIAGE */
+
+        .whisp {
             position: absolute;
             z-index: 1;
-            color: #f7d8ef;
-            opacity: 0.9;
             pointer-events: none;
+            opacity: 0.38;
         }
 
-        .sparkle-one {
-            top: 38px;
-            right: 250px;
-            font-size: 28px;
+        .whisp-right {
+            right: 18px;
+            bottom: 2px;
+            width: 290px;
+            height: 180px;
         }
 
-        .sparkle-two {
-            top: 85px;
-            right: 135px;
-            font-size: 17px;
+        .whisp-left {
+            right: 235px;
+            bottom: -20px;
+            width: 220px;
+            height: 135px;
+            opacity: 0.2;
+            transform: scaleX(-1);
         }
 
-        .sparkle-three {
-            bottom: 45px;
-            right: 360px;
-            font-size: 21px;
+        .whisp-stem {
+            fill: none;
+            stroke: #ddb9d8;
+            stroke-width: 4;
+            stroke-linecap: round;
         }
+
+        .whisp-leaf {
+            fill: #ddb9d8;
+        }
+
+        /* DOOR */
 
         .header-door {
             position: absolute;
-            right: 70px;
+            right: 72px;
             bottom: -2px;
-            z-index: 2;
+            z-index: 3;
 
             width: 145px;
             height: 215px;
 
-            border: 12px solid rgba(224, 188, 224, 0.55);
+            border: 12px solid rgba(224, 188, 224, 0.63);
             border-bottom: none;
             border-radius: 82px 82px 0 0;
 
             background:
                 radial-gradient(
-                    circle at 50% 60%,
-                    rgba(255, 255, 255, 0.9),
+                    circle at 50% 61%,
+                    rgba(255, 255, 255, 0.95),
                     transparent 7%
                 ),
                 radial-gradient(
                     circle at 42% 42%,
-                    rgba(255, 255, 255, 0.6),
+                    rgba(255, 255, 255, 0.7),
                     transparent 4%
                 ),
                 linear-gradient(
@@ -215,35 +297,7 @@
             box-shadow: 0 0 8px rgba(255, 222, 149, 0.65);
         }
 
-        /* LOGO */
-
-        .logo-wrap {
-            position: absolute;
-            z-index: 5;
-            top: 0;
-            left: 0;
-
-            width: 350px;
-            height: 365px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: #fffdfd;
-            border-radius: 0 0 55% 0;
-            box-shadow:
-                12px 12px 28px rgba(45, 24, 65, 0.17);
-        }
-
-        .logo-wrap img {
-            display: block;
-            width: 320px;
-            height: 320px;
-            object-fit: contain;
-        }
-
-        /* MAIN LAYOUT */
+        /* LAYOUT */
 
         .layout {
             display: grid;
@@ -255,6 +309,7 @@
 
         .sidebar {
             padding: 100px 24px 30px;
+
             background:
                 linear-gradient(
                     180deg,
@@ -386,7 +441,7 @@
             background: #ddd1e3;
         }
 
-        /* MAIN CONTENT */
+        /* MAIN */
 
         .main {
             min-width: 0;
@@ -399,8 +454,6 @@
             gap: 22px;
             align-items: start;
         }
-
-        /* CARDS */
 
         .calendar,
         .side-card,
@@ -469,12 +522,9 @@
 
         .legend-dot {
             display: inline-block;
-
             width: 10px;
             height: 10px;
-
             margin-right: 7px;
-
             border-radius: 50%;
         }
 
@@ -511,7 +561,6 @@
                 );
 
             color: white;
-
             font-size: 13px;
             font-weight: 600;
             text-align: center;
@@ -520,9 +569,7 @@
         .day {
             min-height: 87px;
             padding: 10px;
-
             position: relative;
-
             background: white;
         }
 
@@ -600,7 +647,6 @@
             font-size: 15px;
             font-weight: 500;
             text-align: left;
-
             cursor: pointer;
         }
 
@@ -622,7 +668,6 @@
             justify-content: center;
 
             flex-shrink: 0;
-
             border-radius: 50%;
 
             color: white;
@@ -678,7 +723,6 @@
 
             font-size: 14px;
             font-weight: 600;
-
             cursor: pointer;
         }
 
@@ -686,27 +730,31 @@
             background: var(--light-lavender);
         }
 
-        /* SUMMARY CARDS */
+        /* SUMMARY */
 
         .summary {
             grid-column: 1 / -1;
 
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(4, minmax(240px, 1fr));
+            gap: 18px;
 
-            margin-top: 0;
+            width: 100%;
+            overflow-x: auto;
+
+            padding-bottom: 4px;
         }
 
         .summary-card {
-            min-height: 135px;
+            min-width: 240px;
+            min-height: 145px;
 
             display: grid;
-            grid-template-columns: 68px 1fr;
+            grid-template-columns: 68px minmax(0, 1fr);
             align-items: center;
-            gap: 12px;
+            gap: 18px;
 
-            padding: 16px;
+            padding: 18px 20px;
 
             border-radius: 15px;
         }
@@ -719,33 +767,38 @@
             align-items: center;
             justify-content: center;
 
+            flex-shrink: 0;
             border-radius: 50%;
 
             color: white;
             font-size: 28px;
         }
 
+        .summary-text {
+            min-width: 0;
+        }
+
         .summary-card h4 {
             margin: 0;
             color: var(--text);
-            font-size: 13px;
+            font-size: 14px;
+            line-height: 1.35;
             font-weight: 500;
         }
 
         .summary-number {
-            margin: 2px 0 0;
-
+            margin: 4px 0 0;
             color: var(--deep-purple);
-
             font-size: 34px;
             line-height: 1;
             font-weight: 500;
         }
 
         .summary-label {
-            margin-top: 5px;
+            margin-top: 7px;
             color: var(--text);
             font-size: 13px;
+            white-space: nowrap;
         }
 
         .waiting-payment {
@@ -782,7 +835,17 @@
 
         /* RESPONSIVE */
 
-        @media (max-width: 1180px) {
+        @media (max-width: 1250px) {
+            .top-header {
+                padding-right: 245px;
+            }
+
+            .header-door {
+                right: 45px;
+                width: 125px;
+                height: 190px;
+            }
+
             .content-grid {
                 grid-template-columns: 1fr;
             }
@@ -796,11 +859,7 @@
         @media (max-width: 900px) {
             .top-header {
                 min-height: 230px;
-                padding:
-                    30px
-                    25px
-                    30px
-                    280px;
+                padding: 30px 25px 30px 280px;
             }
 
             .logo-wrap {
@@ -813,7 +872,8 @@
                 height: 245px;
             }
 
-            .header-door {
+            .header-door,
+            .whisp {
                 display: none;
             }
 
@@ -827,7 +887,7 @@
             }
 
             .summary {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-columns: repeat(2, minmax(240px, 1fr));
             }
         }
 
@@ -841,7 +901,6 @@
             .logo-wrap {
                 width: 100%;
                 height: 230px;
-
                 border-radius: 0 0 35px 35px;
             }
 
@@ -853,6 +912,7 @@
             .top-header h1 {
                 font-size: 45px;
                 letter-spacing: -2px;
+                white-space: normal;
             }
 
             .top-header h2 {
@@ -917,7 +977,7 @@
 
         <div class="logo-wrap">
             <img
-                src="logo.png"
+                src="./logowhite.png"
                 alt="The Lavender Lair logo"
             >
         </div>
@@ -932,9 +992,137 @@
             </p>
         </div>
 
-        <span class="sparkle sparkle-one">✦</span>
-        <span class="sparkle sparkle-two">✧</span>
-        <span class="sparkle sparkle-three">✦</span>
+        <span class="header-star star-one">✦</span>
+        <span class="header-star star-two">✧</span>
+        <span class="header-star star-three">✦</span>
+        <span class="header-star star-four">✧</span>
+        <span class="header-star star-five">✦</span>
+
+        <svg
+            class="whisp whisp-right"
+            viewBox="0 0 300 180"
+            aria-hidden="true"
+        >
+            <path
+                class="whisp-stem"
+                d="M20 165 C85 132, 135 103, 186 46"
+            />
+
+            <path
+                class="whisp-stem"
+                d="M94 133 C136 139, 192 120, 260 72"
+            />
+
+            <ellipse
+                class="whisp-leaf"
+                cx="70"
+                cy="139"
+                rx="18"
+                ry="8"
+                transform="rotate(-30 70 139)"
+            />
+
+            <ellipse
+                class="whisp-leaf"
+                cx="112"
+                cy="116"
+                rx="20"
+                ry="8"
+                transform="rotate(-35 112 116)"
+            />
+
+            <ellipse
+                class="whisp-leaf"
+                cx="148"
+                cy="87"
+                rx="20"
+                ry="8"
+                transform="rotate(-48 148 87)"
+            />
+
+            <ellipse
+                class="whisp-leaf"
+                cx="178"
+                cy="54"
+                rx="18"
+                ry="8"
+                transform="rotate(-55 178 54)"
+            />
+
+            <ellipse
+                class="whisp-leaf"
+                cx="136"
+                cy="137"
+                rx="18"
+                ry="8"
+                transform="rotate(12 136 137)"
+            />
+
+            <ellipse
+                class="whisp-leaf"
+                cx="180"
+                cy="123"
+                rx="20"
+                ry="8"
+                transform="rotate(-12 180 123)"
+            />
+
+            <ellipse
+                class="whisp-leaf"
+                cx="223"
+                cy="95"
+                rx="20"
+                ry="8"
+                transform="rotate(-25 223 95)"
+            />
+        </svg>
+
+        <svg
+            class="whisp whisp-left"
+            viewBox="0 0 300 180"
+            aria-hidden="true"
+        >
+            <path
+                class="whisp-stem"
+                d="M20 165 C85 132, 135 103, 186 46"
+            />
+
+            <ellipse
+                class="whisp-leaf"
+                cx="70"
+                cy="139"
+                rx="18"
+                ry="8"
+                transform="rotate(-30 70 139)"
+            />
+
+            <ellipse
+                class="whisp-leaf"
+                cx="112"
+                cy="116"
+                rx="20"
+                ry="8"
+                transform="rotate(-35 112 116)"
+            />
+
+            <ellipse
+                class="whisp-leaf"
+                cx="148"
+                cy="87"
+                rx="20"
+                ry="8"
+                transform="rotate(-48 148 87)"
+            />
+
+            <ellipse
+                class="whisp-leaf"
+                cx="178"
+                cy="54"
+                rx="18"
+                ry="8"
+                transform="rotate(-55 178 54)"
+            />
+        </svg>
 
         <div class="header-door"></div>
 
@@ -988,7 +1176,7 @@
 
                 <button class="menu-item">
                     <span class="menu-icon invoices-icon">
-                        <i class="fa-regular fa-receipt"></i>
+                        <i class="fa-solid fa-file-invoice"></i>
                     </span>
 
                     <span>Invoices</span>
@@ -996,7 +1184,7 @@
 
                 <button class="menu-item">
                     <span class="menu-icon payments-icon">
-                        <i class="fa-regular fa-circle-dollar-to-slot"></i>
+                        <i class="fa-solid fa-circle-dollar-to-slot"></i>
                     </span>
 
                     <span>Payments</span>
@@ -1172,7 +1360,7 @@
                             <i class="fa-solid fa-dollar-sign"></i>
                         </div>
 
-                        <div>
+                        <div class="summary-text">
                             <h4>Waiting Payment</h4>
                             <div class="summary-number">0</div>
                             <div class="summary-label">Orders</div>
@@ -1186,7 +1374,7 @@
                             <i class="fa-regular fa-eye"></i>
                         </div>
 
-                        <div>
+                        <div class="summary-text">
                             <h4>Waiting Approval</h4>
                             <div class="summary-number">0</div>
                             <div class="summary-label">Orders</div>
@@ -1200,7 +1388,7 @@
                             <i class="fa-solid fa-cube"></i>
                         </div>
 
-                        <div>
+                        <div class="summary-text">
                             <h4>In Progress</h4>
                             <div class="summary-number">0</div>
                             <div class="summary-label">Orders</div>
@@ -1214,7 +1402,7 @@
                             <i class="fa-solid fa-check"></i>
                         </div>
 
-                        <div>
+                        <div class="summary-text">
                             <h4>Ready</h4>
                             <div class="summary-number">0</div>
                             <div class="summary-label">Orders</div>
@@ -1302,10 +1490,11 @@
 
             const todayKey = dateKey(new Date());
 
-            for (let cellNumber = 0;
-                 cellNumber < 42;
-                 cellNumber += 1) {
-
+            for (
+                let cellNumber = 0;
+                cellNumber < 42;
+                cellNumber += 1
+            ) {
                 const cellDate =
                     new Date(startingCell);
 
