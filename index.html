@@ -389,6 +389,9 @@
   .order-items-heading h3 { margin:0; }
   .order-items-heading .add-item-button { margin-top:0; }
   .order-item-number { grid-column:1/-1; font-weight:800; color:#4a1d87; font-size:14px; }
+  .order-total-box { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:15px 16px; border:2px solid #b99bd3; border-radius:12px; background:#f2eafa; font-size:18px; font-weight:800; }
+  .order-total-box strong { font-size:24px; color:#35136f; }
+  .item-line-total { align-self:end; padding:11px 12px; border-radius:9px; background:#e9ddf2; font-weight:800; color:#35136f; text-align:center; }
 
   .order-record { border-left:6px solid #7640b7; }
   .order-record.urgent { border-left-color:#c9183e; background:#fff8fa; }
@@ -410,14 +413,13 @@
   .drawer {
     position: fixed;
     z-index: 90;
-    top: 0;
-    right: 0;
-    width: min(1080px, 96vw);
+    inset: 0;
+    width: 100vw;
     height: 100vh;
     transform: translateX(105%);
     transition: transform .22s ease;
     background: #fbf9fd;
-    box-shadow: -16px 0 45px rgba(34, 12, 73, .25);
+    box-shadow: none;
     overflow-y: auto;
   }
   .drawer.open { transform: translateX(0); }
@@ -838,7 +840,7 @@ function openModal(type, selectedDate = "", editId = "") {
                 ].map(([value,label]) => `<option value="${value}" ${existingOrder?.status === value ? "selected" : ""}>${label}</option>`).join("")}
               </select>
             </label>
-            <label>Total<input type="number" min="0" step="0.01" name="total" value="${escapeHtml(existingOrder?.total || "")}" placeholder="0.00"></label>
+            <div class="order-total-box"><span>Order Total</span><strong id="orderTotalDisplay">$${Number(existingOrder?.total || 0).toFixed(2)}</strong></div>
           </div>
           <label class="urgent-wrap"><input type="checkbox" name="urgent" ${existingOrder?.urgent ? "checked" : ""}> Mark this order urgent</label>
           <label>Urgent reason<input name="urgentReason" value="${escapeHtml(existingOrder?.urgentReason || "")}" placeholder="Needed for an event, rush request, etc."></label>
@@ -909,12 +911,29 @@ function addOrderItemRow(item = {}) {
       </select>
     </label>
     <label class="item-name-field">Item description<input class="item-name" required value="${escapeHtml(item.name || "")}" placeholder="Shirt, tumbler, sticker set..."></label>
-    <label>Qty<input class="item-qty" type="number" min="1" value="${Number(item.quantity || 1)}"></label>
-    <label>Price<input class="item-price" type="number" min="0" step="0.01" value="${escapeHtml(item.price || "")}" placeholder="0.00"></label>
+    <label>Qty<input class="item-qty" type="number" min="1" value="${Number(item.quantity || 1)}" oninput="updateOrderTotal()"></label>
+    <label>Price Each<input class="item-price" type="number" min="0" step="0.01" value="${escapeHtml(item.price || "")}" placeholder="0.00" oninput="updateOrderTotal()"></label>
+    <div class="item-line-total">Item Total: <span>$0.00</span></div>
     <button type="button" class="remove-item" onclick="removeOrderItemRow(this)">Remove</button>
     <label class="item-image-field">Item image<input class="item-image" type="file" accept="image/*"><span class="image-note">${item.image ? "Current image will stay unless you choose a new one." : "Reference photo, design, or mockup."}</span></label>
   `;
   editor.appendChild(row);
+  updateOrderTotal();
+}
+
+function updateOrderTotal() {
+  let total = 0;
+  document.querySelectorAll(".order-item-row").forEach(row => {
+    const quantity = Math.max(1, Number(row.querySelector(".item-qty")?.value || 1));
+    const price = Math.max(0, Number(row.querySelector(".item-price")?.value || 0));
+    const lineTotal = quantity * price;
+    total += lineTotal;
+    const lineDisplay = row.querySelector(".item-line-total span");
+    if (lineDisplay) lineDisplay.textContent = `$${lineTotal.toFixed(2)}`;
+  });
+  const totalDisplay = document.getElementById("orderTotalDisplay");
+  if (totalDisplay) totalDisplay.textContent = `$${total.toFixed(2)}`;
+  return total;
 }
 
 function updateOrderItemSource(select) {
@@ -932,6 +951,7 @@ function applyInventoryToOrderItem(select) {
   if (!inventoryItem) return;
   row.querySelector(".item-name").value = inventoryItem.name || "";
   row.querySelector(".item-price").value = Number(inventoryItem.unitPrice || 0).toFixed(2);
+  updateOrderTotal();
 }
 
 function removeOrderItemRow(button) {
@@ -942,6 +962,11 @@ function removeOrderItemRow(button) {
     return;
   }
   button.closest(".order-item-row").remove();
+  Array.from(editor.children).forEach((row, index) => {
+    const number = row.querySelector(".order-item-number");
+    if (number) number.textContent = `Item ${index + 1}`;
+  });
+  updateOrderTotal();
 }
 
 function closeModal() {
@@ -1011,12 +1036,11 @@ document.getElementById("entryForm").addEventListener("submit", async event => {
     }
 
     const calculatedTotal = items.reduce((sum, item) => sum + (Number(item.price || 0) * Number(item.quantity || 1)), 0);
-    const enteredTotal = Number(formData.get("total") || 0);
     const values = {
       customer: formData.get("customer")?.trim(),
       dueDate: formData.get("dueDate"),
       status: formData.get("status"),
-      total: enteredTotal || calculatedTotal,
+      total: calculatedTotal,
       urgent: formData.get("urgent") === "on",
       urgentReason: formData.get("urgentReason")?.trim(),
       notes: formData.get("notes")?.trim(),
