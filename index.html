@@ -52,22 +52,11 @@
   }
 
   .nav-hotspot.active-nav {
-    background: linear-gradient(135deg, #35126f, #54218f);
-    box-shadow: 0 6px 14px rgba(52, 19, 105, .22);
+    background: rgba(233, 220, 245, .42);
+    box-shadow: inset 4px 0 0 #7b45ae;
   }
 
-  .nav-hotspot.active-nav::after {
-    content: attr(data-label);
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    padding-left: 23%;
-    color: #fff;
-    font-size: clamp(15px, 1.35vw, 21px);
-    font-weight: 700;
-    text-align: left;
-  }
+  .nav-hotspot.active-nav::after { content: none; }
   .nav-dashboard { top: 34.55%; }
   .nav-calendar { top: 40.35%; }
   .nav-orders { top: 45.65%; }
@@ -374,12 +363,20 @@
   .order-form-section { border: 1px solid #ded0eb; border-radius: 14px; padding: 16px; background: #fcfaff; }
   .order-form-section h3 { margin: 0 0 12px; font-family: Georgia, serif; color: #35136f; }
   .order-form-two { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-  .order-item-row { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:12px; align-items:end; padding:14px; margin-top:12px; border-radius:12px; background:#f3ecf8; }
+  .customer-choice-row { display:grid; grid-template-columns:1fr auto; gap:8px; align-items:end; }
+  .customer-choice-row .secondary { white-space:nowrap; min-height:43px; }
+  .order-item-row { display:grid; grid-template-columns: 180px repeat(2, minmax(0, 1fr)); gap:12px; align-items:end; padding:14px; margin-top:12px; border-radius:12px; background:#f3ecf8; }
   .order-item-row > * { min-width: 0; }
-  .order-item-row .order-item-number,
-  .order-item-row .item-name-field,
-  .order-item-row .item-image-field { grid-column: 1 / -1; }
-  .order-item-row .remove-item { justify-self:end; align-self:end; }
+  .order-item-row .order-item-number { grid-column: 1 / -1; }
+  .order-item-row .item-image-field { grid-column:1; grid-row:2 / span 4; align-self:stretch; padding:12px; border:1px dashed #b89dce; border-radius:10px; background:#fff; }
+  .order-item-row .item-image-field input { padding:8px 0; }
+  .order-item-row .item-source-field { grid-column:2; }
+  .order-item-row .inventory-picker-wrap { grid-column:3; }
+  .order-item-row .item-name-field { grid-column:2 / 4; }
+  .order-item-row .item-qty-field { grid-column:2; }
+  .order-item-row .item-price-field { grid-column:3; }
+  .order-item-row .item-line-total { grid-column:2; }
+  .order-item-row .remove-item { grid-column:3; justify-self:end; align-self:end; }
   .inventory-picker-wrap[style*="display:none"] { display:none !important; }
   .order-item-row .remove-item { border:0; border-radius:9px; padding:11px 13px; background:#f8dce5; color:#8d1535; font-weight:800; }
   .add-item-button { margin-top:12px; border:1px dashed #7442aa; border-radius:10px; padding:10px 14px; color:#4a1d87; background:#fff; font-weight:800; }
@@ -414,14 +411,22 @@
   .record-actions { display:flex; gap:8px; flex-wrap:wrap; }
   .edit-button { border:1px solid #7442aa; background:#fff; color:#42177d; border-radius:8px; padding:8px 11px; font-weight:800; }
   .order-notes { margin-top:10px; padding:10px; background:#fff; border-radius:9px; border:1px solid #e4d8ed; white-space:pre-wrap; }
-  @media (max-width:720px){ .order-form-two{grid-template-columns:1fr}.order-item-row{grid-template-columns:1fr}.order-item-row .order-item-number,.order-item-row .item-name-field,.order-item-row .item-image-field{grid-column:1/-1}.order-item-row .remove-item{justify-self:stretch}.orders-toolbar input,.orders-toolbar select{width:100%}.orders-toolbar .primary{margin-left:0;width:100%} }
+  @media (max-width:720px){ .order-form-two,.customer-choice-row{grid-template-columns:1fr}.order-item-row{grid-template-columns:1fr}.order-item-row .order-item-number,.order-item-row .item-image-field,.order-item-row .item-source-field,.order-item-row .inventory-picker-wrap,.order-item-row .item-name-field,.order-item-row .item-qty-field,.order-item-row .item-price-field,.order-item-row .item-line-total,.order-item-row .remove-item{grid-column:1;grid-row:auto}.order-item-row .remove-item{justify-self:stretch}.orders-toolbar input,.orders-toolbar select{width:100%}.orders-toolbar .primary{margin-left:0;width:100%} }
+
+  .mini-modal-shade { position:fixed; z-index:130; inset:0; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(32,10,67,.68); }
+  .mini-modal-shade.open { display:flex; }
+  .mini-modal { width:min(480px,100%); background:#fff; border-radius:18px; box-shadow:0 24px 60px rgba(24,5,55,.35); overflow:hidden; }
+  .mini-modal-body { padding:22px; }
 
   /* Pages opened from the left menu */
   .drawer {
     position: fixed;
     z-index: 90;
-    inset: 0;
-    width: 100vw;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: min(330px, 21.5vw);
+    width: auto;
     height: 100vh;
     transform: translateX(105%);
     transition: transform .22s ease;
@@ -754,6 +759,27 @@
   </section>
 </div>
 
+<div class="mini-modal-shade" id="quickCustomerShade">
+  <section class="mini-modal" role="dialog" aria-modal="true" aria-labelledby="quickCustomerTitle">
+    <div class="modal-header">
+      <h2 id="quickCustomerTitle">Add Customer</h2>
+      <button class="close-button" type="button" onclick="closeQuickCustomerModal()" aria-label="Close">×</button>
+    </div>
+    <div class="mini-modal-body">
+      <form id="quickCustomerForm" class="form-grid">
+        <label>Name<input name="name" required></label>
+        <label>Email<input type="email" name="email"></label>
+        <label>Phone<input name="phone"></label>
+        <label>Notes<textarea name="notes" rows="3"></textarea></label>
+        <div class="modal-actions">
+          <button type="button" class="secondary" onclick="closeQuickCustomerModal()">Cancel</button>
+          <button type="submit" class="primary">Save Customer</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+
 <aside class="drawer" id="drawer">
   <div class="drawer-header">
     <h2 id="drawerTitle">Orders</h2>
@@ -820,13 +846,15 @@ function openModal(type, selectedDate = "", editId = "") {
         <section class="order-form-section">
           <h3>Order Details</h3>
           <div class="order-form-two">
-            <label>Customer
-              <select name="customer" required>
-                <option value="">Select a customer...</option>
-                ${data.customers.map(c => `<option value="${escapeHtml(c.name)}" ${existingOrder?.customer === c.name ? "selected" : ""}>${escapeHtml(c.name)}</option>`).join("")}
-              </select>
-              ${data.customers.length ? "" : `<span class="image-note">Add a customer from the Customers tab first.</span>`}
-            </label>
+            <div class="customer-choice-row">
+              <label>Customer
+                <select name="customer" id="orderCustomerSelect" required>
+                  <option value="">Select a customer...</option>
+                  ${data.customers.map(c => `<option value="${escapeHtml(c.name)}" ${existingOrder?.customer === c.name ? "selected" : ""}>${escapeHtml(c.name)}</option>`).join("")}
+                </select>
+              </label>
+              <button type="button" class="secondary" onclick="openQuickCustomerModal()">+ Add Customer</button>
+            </div>
             <label>Due date<input type="date" name="dueDate" required value="${escapeHtml(existingOrder?.dueDate || selectedDate || "")}"></label>
             <label>Status
               <select name="status" required>
@@ -891,6 +919,42 @@ function openModal(type, selectedDate = "", editId = "") {
   }
 }
 
+function openQuickCustomerModal() {
+  document.getElementById("quickCustomerShade").classList.add("open");
+  setTimeout(() => document.querySelector('#quickCustomerForm input[name="name"]')?.focus(), 0);
+}
+
+function closeQuickCustomerModal() {
+  document.getElementById("quickCustomerShade").classList.remove("open");
+  document.getElementById("quickCustomerForm").reset();
+}
+
+document.getElementById("quickCustomerForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const formData = new FormData(event.currentTarget);
+  const name = String(formData.get("name") || "").trim();
+  if (!name) return;
+  const customer = {
+    id: crypto.randomUUID(),
+    createdAt: new Date().toISOString(),
+    name,
+    email: String(formData.get("email") || "").trim(),
+    phone: String(formData.get("phone") || "").trim(),
+    notes: String(formData.get("notes") || "").trim()
+  };
+  data.customers.push(customer);
+  saveData();
+  const select = document.getElementById("orderCustomerSelect");
+  if (select) {
+    const option = document.createElement("option");
+    option.value = customer.name;
+    option.textContent = customer.name;
+    option.selected = true;
+    select.appendChild(option);
+  }
+  closeQuickCustomerModal();
+});
+
 function addOrderItemRow(item = {}) {
   const editor = document.getElementById("orderItemsEditor");
   if (!editor) return;
@@ -901,7 +965,8 @@ function addOrderItemRow(item = {}) {
   const sourceType = item.sourceType || (item.inventoryId ? "inventory" : "custom");
   row.innerHTML = `
     <div class="order-item-number">Item ${itemNumber}</div>
-    <label>Item source
+    <label class="item-image-field">Item image<input class="item-image" type="file" accept="image/*"><span class="image-note">${item.image ? "Current image will stay unless you choose a new one." : "Reference photo, design, or mockup."}</span></label>
+    <label class="item-source-field">Item source
       <select class="item-source" onchange="updateOrderItemSource(this)">
         <option value="custom" ${sourceType === "custom" ? "selected" : ""}>Custom order</option>
         <option value="inventory" ${sourceType === "inventory" ? "selected" : ""}>Choose from inventory</option>
@@ -914,11 +979,10 @@ function addOrderItemRow(item = {}) {
       </select>
     </label>
     <label class="item-name-field">Item description<input class="item-name" required value="${escapeHtml(item.name || "")}" placeholder="Shirt, tumbler, sticker set..."></label>
-    <label>Qty<input class="item-qty" type="number" min="1" value="${Number(item.quantity || 1)}" oninput="updateOrderTotal()"></label>
-    <label>Price Each<input class="item-price" type="number" min="0" step="0.01" value="${escapeHtml(item.price || "")}" placeholder="0.00" oninput="updateOrderTotal()"></label>
+    <label class="item-qty-field">Qty<input class="item-qty" type="number" min="1" value="${Number(item.quantity || 1)}" oninput="updateOrderTotal()"></label>
+    <label class="item-price-field">Price Each<input class="item-price" type="number" min="0" step="0.01" value="${escapeHtml(item.price || "")}" placeholder="0.00" oninput="updateOrderTotal()"></label>
     <div class="item-line-total">Item Total: <span>$0.00</span></div>
     <button type="button" class="remove-item" onclick="removeOrderItemRow(this)">Remove</button>
-    <label class="item-image-field">Item image<input class="item-image" type="file" accept="image/*"><span class="image-note">${item.image ? "Current image will stay unless you choose a new one." : "Reference photo, design, or mockup."}</span></label>
   `;
   editor.appendChild(row);
   updateOrderTotal();
