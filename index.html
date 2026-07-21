@@ -376,6 +376,15 @@
   .orders-toolbar { display:flex; gap:10px; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; }
   .orders-toolbar input, .orders-toolbar select { width:auto; min-width:190px; }
   .orders-toolbar .primary { margin-left:auto; }
+  .orders-add-card { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:18px; padding:18px 20px; border:2px solid #b99bd3; border-radius:15px; background:#f2eafa; }
+  .orders-add-card h3 { margin:0 0 4px; font-family:Georgia,serif; color:#35136f; }
+  .orders-add-card p { margin:0; color:#674a82; }
+  .orders-add-card .primary { min-width:165px; font-size:16px; }
+  .order-items-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px; }
+  .order-items-heading h3 { margin:0; }
+  .order-items-heading .add-item-button { margin-top:0; }
+  .order-item-number { grid-column:1/-1; font-weight:800; color:#4a1d87; font-size:14px; }
+
   .order-record { border-left:6px solid #7640b7; }
   .order-record.urgent { border-left-color:#c9183e; background:#fff8fa; }
   .order-topline { display:flex; gap:10px; justify-content:space-between; align-items:flex-start; }
@@ -825,7 +834,10 @@ function openModal(type, selectedDate = "", editId = "") {
           <label>Order notes<textarea name="notes" rows="3">${escapeHtml(existingOrder?.notes || "")}</textarea></label>
         </section>
         <section class="order-form-section">
-          <h3>Order Items</h3>
+          <div class="order-items-heading">
+            <h3>Order Items</h3>
+            <button type="button" class="add-item-button" onclick="addOrderItemRow()">+ Add Another Item</button>
+          </div>
           <div id="orderItemsEditor"></div>
           <button type="button" class="add-item-button" onclick="addOrderItemRow()">+ Add Another Item</button>
         </section>
@@ -869,7 +881,9 @@ function addOrderItemRow(item = {}) {
   const row = document.createElement("div");
   row.className = "order-item-row";
   row.dataset.existingImage = item.image || "";
+  const itemNumber = editor.children.length + 1;
   row.innerHTML = `
+    <div class="order-item-number">Item ${itemNumber}</div>
     <label class="item-name-field">Item description<input class="item-name" required value="${escapeHtml(item.name || "")}" placeholder="Shirt, tumbler, sticker set..."></label>
     <label>Qty<input class="item-qty" type="number" min="1" value="${Number(item.quantity || 1)}"></label>
     <label>Price<input class="item-price" type="number" min="0" step="0.01" value="${escapeHtml(item.price || "")}" placeholder="0.00"></label>
@@ -1064,13 +1078,19 @@ function renderSection(section) {
     });
 
     const toolbar = `
+      <div class="orders-add-card">
+        <div>
+          <h3>Add an Order</h3>
+          <p>Create an order with one item or as many items as you need.</p>
+        </div>
+        <button class="primary" onclick="closeDrawer(); openModal('order')">+ Add Order</button>
+      </div>
       <div class="orders-toolbar">
         <input id="orderSearch" placeholder="Search customer or item" oninput="filterOrders()" value="${escapeHtml(query)}">
         <select id="orderStatusFilter" onchange="filterOrders()">
           <option value="all">All statuses</option>
           ${["approval","payment","processing","progress","ready","shipped","delivered","completed","cancelled"].map(value => `<option value="${value}" ${status === value ? "selected" : ""}>${statusLabel(value)}</option>`).join("")}
         </select>
-        <button class="primary" onclick="closeDrawer(); openModal('order')">+ New Order</button>
       </div>`;
 
     if (!orders.length) return toolbar + `<div class="empty">No matching orders yet.</div>`;
