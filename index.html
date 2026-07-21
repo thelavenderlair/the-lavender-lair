@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>The Lavender Lair Dashboard</title>
 <style>
   * { box-sizing: border-box; }
@@ -284,6 +287,10 @@
   .count-approval { left: 47.6%; }
   .count-progress { left: 66.4%; }
   .count-ready { left: 85.2%; width: 9.8%; }
+
+  /* Dashboard artwork already contains the status numbers and labels.
+     Never draw a second live-count layer over those cards. */
+  .count, [id^="count"] { display: none !important; }
 
   /* Modal */
   .modal-shade {
@@ -1337,19 +1344,9 @@ function statusLabel(status) {
 }
 
 function updateDashboard() {
-  const counts = { payment: 0, approval: 0, progress: 0, ready: 0 };
-  data.orders.forEach(order => {
-    if (counts[order.status] !== undefined) counts[order.status]++;
-  });
-
-  const paymentCount = document.getElementById("countPayment");
-  const approvalCount = document.getElementById("countApproval");
-  const progressCount = document.getElementById("countProgress");
-  const readyCount = document.getElementById("countReady");
-  if (paymentCount) paymentCount.textContent = counts.payment;
-  if (approvalCount) approvalCount.textContent = counts.approval;
-  if (progressCount) progressCount.textContent = counts.progress;
-  if (readyCount) readyCount.textContent = counts.ready;
+  // The four status cards are part of the dashboard artwork itself.
+  // Remove any legacy counter nodes so nothing can appear twice.
+  document.querySelectorAll('.count, [id^="count"]').forEach(node => node.remove());
   renderCalendar();
 }
 
