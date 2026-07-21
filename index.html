@@ -360,13 +360,45 @@
     background: #4a1d87;
   }
 
+
+
+  /* Orders workspace */
+  .modal.order-modal { width: min(920px, 96vw); }
+  .order-form-section { border: 1px solid #ded0eb; border-radius: 14px; padding: 16px; background: #fcfaff; }
+  .order-form-section h3 { margin: 0 0 12px; font-family: Georgia, serif; color: #35136f; }
+  .order-form-two { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+  .order-item-row { display:grid; grid-template-columns: 1.6fr .55fr .7fr auto; gap:10px; align-items:end; padding:12px; margin-top:10px; border-radius:12px; background:#f3ecf8; }
+  .order-item-row .item-image-field { grid-column: 1 / 4; }
+  .order-item-row .remove-item { border:0; border-radius:9px; padding:11px 13px; background:#f8dce5; color:#8d1535; font-weight:800; }
+  .add-item-button { margin-top:12px; border:1px dashed #7442aa; border-radius:10px; padding:10px 14px; color:#4a1d87; background:#fff; font-weight:800; }
+  .urgent-wrap { display:flex; align-items:center; gap:9px; padding:11px 12px; border:1px solid #e9b5c4; border-radius:10px; background:#fff7f9; font-weight:800; }
+  .urgent-wrap input { width:auto; }
+  .orders-toolbar { display:flex; gap:10px; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; }
+  .orders-toolbar input, .orders-toolbar select { width:auto; min-width:190px; }
+  .orders-toolbar .primary { margin-left:auto; }
+  .order-record { border-left:6px solid #7640b7; }
+  .order-record.urgent { border-left-color:#c9183e; background:#fff8fa; }
+  .order-topline { display:flex; gap:10px; justify-content:space-between; align-items:flex-start; }
+  .order-badges { display:flex; gap:7px; flex-wrap:wrap; margin:8px 0; }
+  .badge { display:inline-flex; align-items:center; border-radius:999px; padding:5px 9px; font-size:12px; font-weight:800; background:#ece2f4; color:#3d1678; }
+  .badge.urgent { background:#f7d8e1; color:#9d1238; }
+  .order-items-list { display:grid; gap:8px; margin-top:12px; }
+  .order-item-card { display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; padding:10px; border-radius:10px; background:#f5f0f8; }
+  .order-item-card.complete .item-name { text-decoration:line-through; opacity:.65; }
+  .order-item-card input { width:auto; }
+  .order-item-thumb { width:58px; height:58px; object-fit:cover; border-radius:8px; border:1px solid #d9cae5; }
+  .record-actions { display:flex; gap:8px; flex-wrap:wrap; }
+  .edit-button { border:1px solid #7442aa; background:#fff; color:#42177d; border-radius:8px; padding:8px 11px; font-weight:800; }
+  .order-notes { margin-top:10px; padding:10px; background:#fff; border-radius:9px; border:1px solid #e4d8ed; white-space:pre-wrap; }
+  @media (max-width:720px){ .order-form-two{grid-template-columns:1fr}.order-item-row{grid-template-columns:1fr 1fr}.order-item-row .item-name-field,.order-item-row .item-image-field{grid-column:1/-1}.orders-toolbar input,.orders-toolbar select{width:100%}.orders-toolbar .primary{margin-left:0;width:100%} }
+
   /* Pages opened from the left menu */
   .drawer {
     position: fixed;
     z-index: 90;
     top: 0;
     right: 0;
-    width: min(760px, 92vw);
+    width: min(1080px, 96vw);
     height: 100vh;
     transform: translateX(105%);
     transition: transform .22s ease;
@@ -748,78 +780,72 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-function openModal(type, selectedDate = "") {
+function openModal(type, selectedDate = "", editId = "") {
   const title = document.getElementById("modalTitle");
   const fields = document.getElementById("formFields");
   const form = document.getElementById("entryForm");
+  const modal = document.querySelector(".modal");
   form.dataset.type = type;
+  form.dataset.editId = editId || "";
+  modal.classList.toggle("order-modal", type === "order");
+
+  const existingOrder = type === "order" && editId
+    ? data.orders.find(order => order.id === editId)
+    : null;
 
   const forms = {
     order: {
-      title: "New Order",
+      title: existingOrder ? "Edit Order" : "New Order",
       html: `
-        <label>Customer name<input name="customer" required></label>
-        <label>Order description<input name="description" required></label>
-        <label>Due date<input type="date" name="dueDate" required></label>
-        <label>Status
-          <select name="status" required>
-            <option value="payment">Waiting Payment</option>
-            <option value="approval">Waiting Approval</option>
-            <option value="progress">In Progress</option>
-            <option value="ready">Ready</option>
-          </select>
-        </label>
-        <label>Total<input type="number" min="0" step="0.01" name="total" placeholder="0.00"></label>
-        <label>Order image
-          <input type="file" name="orderImageFile" accept="image/*">
-          <span class="image-note">Add a reference photo, design, mockup, or customer image.</span>
-        </label>
+        <section class="order-form-section">
+          <h3>Order Details</h3>
+          <div class="order-form-two">
+            <label>Customer name<input name="customer" required value="${escapeHtml(existingOrder?.customer || "")}" list="customerNames"></label>
+            <datalist id="customerNames">${data.customers.map(c => `<option value="${escapeHtml(c.name)}"></option>`).join("")}</datalist>
+            <label>Due date<input type="date" name="dueDate" required value="${escapeHtml(existingOrder?.dueDate || selectedDate || "")}"></label>
+            <label>Status
+              <select name="status" required>
+                ${[
+                  ["approval","Waiting for Approval"],
+                  ["payment","Waiting for Payment"],
+                  ["processing","Processing"],
+                  ["progress","In Production"],
+                  ["ready","Ready"],
+                  ["shipped","Shipped"],
+                  ["delivered","Delivered"],
+                  ["completed","Completed"],
+                  ["cancelled","Cancelled"]
+                ].map(([value,label]) => `<option value="${value}" ${existingOrder?.status === value ? "selected" : ""}>${label}</option>`).join("")}
+              </select>
+            </label>
+            <label>Total<input type="number" min="0" step="0.01" name="total" value="${escapeHtml(existingOrder?.total || "")}" placeholder="0.00"></label>
+          </div>
+          <label class="urgent-wrap"><input type="checkbox" name="urgent" ${existingOrder?.urgent ? "checked" : ""}> Mark this order urgent</label>
+          <label>Urgent reason<input name="urgentReason" value="${escapeHtml(existingOrder?.urgentReason || "")}" placeholder="Needed for an event, rush request, etc."></label>
+          <label>Order notes<textarea name="notes" rows="3">${escapeHtml(existingOrder?.notes || "")}</textarea></label>
+        </section>
+        <section class="order-form-section">
+          <h3>Order Items</h3>
+          <div id="orderItemsEditor"></div>
+          <button type="button" class="add-item-button" onclick="addOrderItemRow()">+ Add Another Item</button>
+        </section>
       `
     },
     customer: {
       title: "New Customer",
-      html: `
-        <label>Name<input name="name" required></label>
-        <label>Email<input type="email" name="email"></label>
-        <label>Phone<input name="phone"></label>
-        <label>Notes<textarea name="notes" rows="3"></textarea></label>
-      `
+      html: `<label>Name<input name="name" required></label><label>Email<input type="email" name="email"></label><label>Phone<input name="phone"></label><label>Notes<textarea name="notes" rows="3"></textarea></label>`
     },
     inventory: {
       title: "Add Inventory",
-      html: `
-        <label>Item name<input name="name" required></label>
-        <label>Category
-          <select name="category">
-            <option>Apparel</option>
-            <option>Paper Products</option>
-            <option>Stickers</option>
-            <option>Add On</option>
-            <option>Drinkware</option>
-            <option>Houseware</option>
-            <option>Other</option>
-          </select>
-        </label>
-        <label>Quantity<input type="number" min="0" name="quantity" value="0" required></label>
-        <label>SKU<input name="sku"></label>
-      `
+      html: `<label>Item name<input name="name" required></label><label>Category<select name="category"><option>Apparel</option><option>Paper Products</option><option>Stickers</option><option>Add On</option><option>Drinkware</option><option>Houseware</option><option>Other</option></select></label><label>Quantity<input type="number" min="0" name="quantity" value="0" required></label><label>SKU<input name="sku"></label>`
     },
     file: {
       title: "Add File Link",
-      html: `
-        <label>File name<input name="name" required></label>
-        <label>Image or file URL<input type="url" name="url" required placeholder="https://"></label>
-        <label>Customer or order<input name="related"></label>
-      `
+      html: `<label>File name<input name="name" required></label><label>Image or file URL<input type="url" name="url" required placeholder="https://"></label><label>Customer or order<input name="related"></label>`
     },
     event: {
       title: "Add Calendar Event",
-      html: `
-        <label>Event title<input name="title" required></label>
-        <label>Date<input type="date" name="date" required></label>
-        <label>Time<input type="time" name="time"></label>
-        <label>Notes<textarea name="notes" rows="3"></textarea></label>
-      `
+      html: `<label>Event title<input name="title" required></label><label>Date<input type="date" name="date" required></label><label>Time<input type="time" name="time"></label><label>Notes<textarea name="notes" rows="3"></textarea></label>`
     }
   };
 
@@ -827,10 +853,40 @@ function openModal(type, selectedDate = "") {
   fields.innerHTML = forms[type].html;
   document.getElementById("modalShade").classList.add("open");
 
+  if (type === "order") {
+    const items = existingOrder?.items?.length ? existingOrder.items : [{ name: "", quantity: 1, price: "", complete: false, image: "" }];
+    items.forEach(item => addOrderItemRow(item));
+  }
   if (type === "event" && selectedDate) {
     const dateInput = fields.querySelector('input[name="date"]');
     if (dateInput) dateInput.value = selectedDate;
   }
+}
+
+function addOrderItemRow(item = {}) {
+  const editor = document.getElementById("orderItemsEditor");
+  if (!editor) return;
+  const row = document.createElement("div");
+  row.className = "order-item-row";
+  row.dataset.existingImage = item.image || "";
+  row.innerHTML = `
+    <label class="item-name-field">Item description<input class="item-name" required value="${escapeHtml(item.name || "")}" placeholder="Shirt, tumbler, sticker set..."></label>
+    <label>Qty<input class="item-qty" type="number" min="1" value="${Number(item.quantity || 1)}"></label>
+    <label>Price<input class="item-price" type="number" min="0" step="0.01" value="${escapeHtml(item.price || "")}" placeholder="0.00"></label>
+    <button type="button" class="remove-item" onclick="removeOrderItemRow(this)">Remove</button>
+    <label class="item-image-field">Item image<input class="item-image" type="file" accept="image/*"><span class="image-note">${item.image ? "Current image will stay unless you choose a new one." : "Reference photo, design, or mockup."}</span></label>
+  `;
+  editor.appendChild(row);
+}
+
+function removeOrderItemRow(button) {
+  const editor = document.getElementById("orderItemsEditor");
+  if (!editor) return;
+  if (editor.children.length === 1) {
+    alert("An order needs at least one item.");
+    return;
+  }
+  button.closest(".order-item-row").remove();
 }
 
 function closeModal() {
@@ -873,30 +929,78 @@ async function prepareOrderImage(file) {
 
 document.getElementById("entryForm").addEventListener("submit", async event => {
   event.preventDefault();
-  const type = event.currentTarget.dataset.type;
-  const formData = new FormData(event.currentTarget);
-  const imageFile = formData.get("orderImageFile");
-  formData.delete("orderImageFile");
+  const form = event.currentTarget;
+  const type = form.dataset.type;
+  const editId = form.dataset.editId || "";
+  const formData = new FormData(form);
 
-  const values = Object.fromEntries(formData.entries());
+  if (type === "order") {
+    const rows = Array.from(document.querySelectorAll(".order-item-row"));
+    const items = [];
+    for (const row of rows) {
+      const file = row.querySelector(".item-image").files[0];
+      let image = row.dataset.existingImage || "";
+      if (file) image = await prepareOrderImage(file);
+      items.push({
+        id: crypto.randomUUID(),
+        name: row.querySelector(".item-name").value.trim(),
+        quantity: Number(row.querySelector(".item-qty").value || 1),
+        price: Number(row.querySelector(".item-price").value || 0),
+        complete: false,
+        image
+      });
+    }
 
-  if (type === "order" && imageFile instanceof File && imageFile.size > 0) {
-    values.orderImage = await prepareOrderImage(imageFile);
+    const values = {
+      customer: formData.get("customer")?.trim(),
+      dueDate: formData.get("dueDate"),
+      status: formData.get("status"),
+      total: formData.get("total"),
+      urgent: formData.get("urgent") === "on",
+      urgentReason: formData.get("urgentReason")?.trim(),
+      notes: formData.get("notes")?.trim(),
+      items,
+      description: items.map(item => item.name).join(", ")
+    };
+
+    if (editId) {
+      const index = data.orders.findIndex(order => order.id === editId);
+      if (index >= 0) data.orders[index] = { ...data.orders[index], ...values, updatedAt: new Date().toISOString() };
+    } else {
+      data.orders.push({ id: crypto.randomUUID(), createdAt: new Date().toISOString(), ...values });
+    }
+  } else {
+    const values = Object.fromEntries(formData.entries());
+    const item = { id: crypto.randomUUID(), createdAt: new Date().toISOString(), ...values };
+    if (type === "customer") data.customers.push(item);
+    if (type === "inventory") data.inventory.push(item);
+    if (type === "file") data.files.push(item);
+    if (type === "event") data.events.push(item);
   }
-
-  const item = { id: crypto.randomUUID(), createdAt: new Date().toISOString(), ...values };
-
-  if (type === "order") data.orders.push(item);
-  if (type === "customer") data.customers.push(item);
-  if (type === "inventory") data.inventory.push(item);
-  if (type === "file") data.files.push(item);
-  if (type === "event") data.events.push(item);
 
   saveData();
   closeModal();
   if (type === "order") openDrawer("Orders");
   if (type === "event") openDrawer("Calendar");
 });
+
+function toggleOrderItem(orderId, itemId, checked) {
+  const order = data.orders.find(order => order.id === orderId);
+  const item = order?.items?.find(item => item.id === itemId);
+  if (!item) return;
+  item.complete = checked;
+  saveData();
+  openDrawer("Orders");
+}
+
+function editOrder(id) {
+  closeDrawer();
+  openModal("order", "", id);
+}
+
+function filterOrders() {
+  openDrawer("Orders");
+}
 
 function deleteItem(collection, id) {
   data[collection] = data[collection].filter(item => item.id !== id);
@@ -952,20 +1056,52 @@ function renderSection(section) {
   const key = section.toLowerCase();
 
   if (key === "orders") {
-    if (!data.orders.length) return `<div class="empty">No orders yet. Click “+ New Order” on the dashboard.</div>`;
-    return data.orders.map(order => `
-      <article class="record">
-        <div>
-          <h3>${escapeHtml(order.customer)}</h3>
-          <p>${escapeHtml(order.description)}</p>
-          <p><strong>Due:</strong> ${escapeHtml(order.dueDate)}</p>
-          <p><strong>Status:</strong> ${statusLabel(order.status)}</p>
-          <p><strong>Total:</strong> $${Number(order.total || 0).toFixed(2)}</p>
-          ${order.orderImage
-            ? `<img class="order-image" src="${order.orderImage}" alt="Image for ${escapeHtml(order.customer)}'s order">`
-            : ""}
+    const query = (document.getElementById("orderSearch")?.value || "").toLowerCase();
+    const status = document.getElementById("orderStatusFilter")?.value || "all";
+    const orders = data.orders.filter(order => {
+      const haystack = `${order.customer || ""} ${order.description || ""} ${order.notes || ""}`.toLowerCase();
+      return (!query || haystack.includes(query)) && (status === "all" || order.status === status);
+    });
+
+    const toolbar = `
+      <div class="orders-toolbar">
+        <input id="orderSearch" placeholder="Search customer or item" oninput="filterOrders()" value="${escapeHtml(query)}">
+        <select id="orderStatusFilter" onchange="filterOrders()">
+          <option value="all">All statuses</option>
+          ${["approval","payment","processing","progress","ready","shipped","delivered","completed","cancelled"].map(value => `<option value="${value}" ${status === value ? "selected" : ""}>${statusLabel(value)}</option>`).join("")}
+        </select>
+        <button class="primary" onclick="closeDrawer(); openModal('order')">+ New Order</button>
+      </div>`;
+
+    if (!orders.length) return toolbar + `<div class="empty">No matching orders yet.</div>`;
+    return toolbar + orders.slice().sort((a,b) => (a.dueDate || "").localeCompare(b.dueDate || "")).map(order => `
+      <article class="record order-record ${order.urgent ? "urgent" : ""}">
+        <div style="width:100%">
+          <div class="order-topline">
+            <div>
+              <h3>${escapeHtml(order.customer)}</h3>
+              <div class="order-badges">
+                <span class="badge">${statusLabel(order.status)}</span>
+                <span class="badge">Due ${escapeHtml(order.dueDate || "Not set")}</span>
+                ${order.urgent ? `<span class="badge urgent">URGENT${order.urgentReason ? `: ${escapeHtml(order.urgentReason)}` : ""}</span>` : ""}
+              </div>
+            </div>
+            <strong>$${Number(order.total || 0).toFixed(2)}</strong>
+          </div>
+          <div class="order-items-list">
+            ${(order.items?.length ? order.items : [{id:"legacy",name:order.description || "Order item",quantity:1,price:order.total || 0,complete:false,image:order.orderImage || ""}]).map(item => `
+              <div class="order-item-card ${item.complete ? "complete" : ""}">
+                <input type="checkbox" ${item.complete ? "checked" : ""} onchange="toggleOrderItem('${order.id}','${item.id}',this.checked)" aria-label="Mark item complete">
+                <div><strong class="item-name">${escapeHtml(item.name)}</strong><br><small>Qty ${Number(item.quantity || 1)} · $${Number(item.price || 0).toFixed(2)}</small></div>
+                ${item.image ? `<img class="order-item-thumb" src="${item.image}" alt="${escapeHtml(item.name)}">` : ""}
+              </div>`).join("")}
+          </div>
+          ${order.notes ? `<div class="order-notes"><strong>Notes:</strong> ${escapeHtml(order.notes)}</div>` : ""}
+          <div class="record-actions" style="margin-top:12px">
+            <button class="edit-button" onclick="editOrder('${order.id}')">Edit Order</button>
+            <button class="delete" onclick="deleteItem('orders','${order.id}')">Delete</button>
+          </div>
         </div>
-        <button class="delete" onclick="deleteItem('orders','${order.id}')">Delete</button>
       </article>
     `).join("");
   }
@@ -1044,10 +1180,15 @@ function renderSection(section) {
 
 function statusLabel(status) {
   return {
-    payment: "Waiting Payment",
-    approval: "Waiting Approval",
-    progress: "In Progress",
-    ready: "Ready"
+    approval: "Waiting for Approval",
+    payment: "Waiting for Payment",
+    processing: "Processing",
+    progress: "In Production",
+    ready: "Ready",
+    shipped: "Shipped",
+    delivered: "Delivered",
+    completed: "Completed",
+    cancelled: "Cancelled"
   }[status] || status;
 }
 
