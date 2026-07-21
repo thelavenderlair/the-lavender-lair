@@ -367,8 +367,13 @@
   .order-form-section { border: 1px solid #ded0eb; border-radius: 14px; padding: 16px; background: #fcfaff; }
   .order-form-section h3 { margin: 0 0 12px; font-family: Georgia, serif; color: #35136f; }
   .order-form-two { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-  .order-item-row { display:grid; grid-template-columns: 1.6fr .55fr .7fr auto; gap:10px; align-items:end; padding:12px; margin-top:10px; border-radius:12px; background:#f3ecf8; }
-  .order-item-row .item-image-field { grid-column: 1 / 4; }
+  .order-item-row { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:12px; align-items:end; padding:14px; margin-top:12px; border-radius:12px; background:#f3ecf8; }
+  .order-item-row > * { min-width: 0; }
+  .order-item-row .order-item-number,
+  .order-item-row .item-name-field,
+  .order-item-row .item-image-field { grid-column: 1 / -1; }
+  .order-item-row .remove-item { justify-self:end; align-self:end; }
+  .inventory-picker-wrap[style*="display:none"] { display:none !important; }
   .order-item-row .remove-item { border:0; border-radius:9px; padding:11px 13px; background:#f8dce5; color:#8d1535; font-weight:800; }
   .add-item-button { margin-top:12px; border:1px dashed #7442aa; border-radius:10px; padding:10px 14px; color:#4a1d87; background:#fff; font-weight:800; }
   .urgent-wrap { display:flex; align-items:center; gap:9px; padding:11px 12px; border:1px solid #e9b5c4; border-radius:10px; background:#fff7f9; font-weight:800; }
@@ -399,7 +404,7 @@
   .record-actions { display:flex; gap:8px; flex-wrap:wrap; }
   .edit-button { border:1px solid #7442aa; background:#fff; color:#42177d; border-radius:8px; padding:8px 11px; font-weight:800; }
   .order-notes { margin-top:10px; padding:10px; background:#fff; border-radius:9px; border:1px solid #e4d8ed; white-space:pre-wrap; }
-  @media (max-width:720px){ .order-form-two{grid-template-columns:1fr}.order-item-row{grid-template-columns:1fr 1fr}.order-item-row .item-name-field,.order-item-row .item-image-field{grid-column:1/-1}.orders-toolbar input,.orders-toolbar select{width:100%}.orders-toolbar .primary{margin-left:0;width:100%} }
+  @media (max-width:720px){ .order-form-two{grid-template-columns:1fr}.order-item-row{grid-template-columns:1fr}.order-item-row .order-item-number,.order-item-row .item-name-field,.order-item-row .item-image-field{grid-column:1/-1}.order-item-row .remove-item{justify-self:stretch}.orders-toolbar input,.orders-toolbar select{width:100%}.orders-toolbar .primary{margin-left:0;width:100%} }
 
   /* Pages opened from the left menu */
   .drawer {
@@ -810,8 +815,13 @@ function openModal(type, selectedDate = "", editId = "") {
         <section class="order-form-section">
           <h3>Order Details</h3>
           <div class="order-form-two">
-            <label>Customer name<input name="customer" required value="${escapeHtml(existingOrder?.customer || "")}" list="customerNames"></label>
-            <datalist id="customerNames">${data.customers.map(c => `<option value="${escapeHtml(c.name)}"></option>`).join("")}</datalist>
+            <label>Customer
+              <select name="customer" required>
+                <option value="">Select a customer...</option>
+                ${data.customers.map(c => `<option value="${escapeHtml(c.name)}" ${existingOrder?.customer === c.name ? "selected" : ""}>${escapeHtml(c.name)}</option>`).join("")}
+              </select>
+              ${data.customers.length ? "" : `<span class="image-note">Add a customer from the Customers tab first.</span>`}
+            </label>
             <label>Due date<input type="date" name="dueDate" required value="${escapeHtml(existingOrder?.dueDate || selectedDate || "")}"></label>
             <label>Status
               <select name="status" required>
