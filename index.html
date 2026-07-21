@@ -726,10 +726,6 @@
       </div>
     </section>
 
-    <div class="count count-payment"><strong id="countPayment">0</strong><span>Orders</span></div>
-    <div class="count count-approval"><strong id="countApproval">0</strong><span>Orders</span></div>
-    <div class="count count-progress"><strong id="countProgress">0</strong><span>Orders</span></div>
-    <div class="count count-ready"><strong id="countReady">0</strong><span>Orders</span></div>
   </main>
 </div>
 
@@ -1346,10 +1342,14 @@ function updateDashboard() {
     if (counts[order.status] !== undefined) counts[order.status]++;
   });
 
-  document.getElementById("countPayment").textContent = counts.payment;
-  document.getElementById("countApproval").textContent = counts.approval;
-  document.getElementById("countProgress").textContent = counts.progress;
-  document.getElementById("countReady").textContent = counts.ready;
+  const paymentCount = document.getElementById("countPayment");
+  const approvalCount = document.getElementById("countApproval");
+  const progressCount = document.getElementById("countProgress");
+  const readyCount = document.getElementById("countReady");
+  if (paymentCount) paymentCount.textContent = counts.payment;
+  if (approvalCount) approvalCount.textContent = counts.approval;
+  if (progressCount) progressCount.textContent = counts.progress;
+  if (readyCount) readyCount.textContent = counts.ready;
   renderCalendar();
 }
 
