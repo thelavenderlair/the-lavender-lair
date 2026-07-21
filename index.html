@@ -759,6 +759,7 @@ const defaultData = {
   orders: [],
   customers: [],
   inventory: [],
+  invoices: [],
   files: [],
   events: []
 };
@@ -849,7 +850,7 @@ function openModal(type, selectedDate = "", editId = "") {
     },
     inventory: {
       title: "Add Inventory",
-      html: `<label>Item name<input name="name" required></label><label>Category<select name="category"><option>Apparel</option><option>Paper Products</option><option>Stickers</option><option>Add On</option><option>Drinkware</option><option>Houseware</option><option>Other</option></select></label><label>Quantity<input type="number" min="0" name="quantity" value="0" required></label><label>SKU<input name="sku"></label>`
+      html: `<label>Item name<input name="name" required></label><label>Inventory type<select name="inventoryType"><option value="product">Product</option><option value="supply">Supply</option></select></label><label>Category<select name="category"><option>Apparel</option><option>Paper Products</option><option>Stickers</option><option>Add On</option><option>Drinkware</option><option>Houseware</option><option>Other</option></select></label><label>Quantity<input type="number" min="0" name="quantity" value="0" required></label><label>Unit price<input type="number" min="0" step="0.01" name="unitPrice" value="0" placeholder="0.00"></label><label>SKU<input name="sku"></label>`
     },
     file: {
       title: "Add File Link",
@@ -882,8 +883,21 @@ function addOrderItemRow(item = {}) {
   row.className = "order-item-row";
   row.dataset.existingImage = item.image || "";
   const itemNumber = editor.children.length + 1;
+  const sourceType = item.sourceType || (item.inventoryId ? "inventory" : "custom");
   row.innerHTML = `
     <div class="order-item-number">Item ${itemNumber}</div>
+    <label>Item source
+      <select class="item-source" onchange="updateOrderItemSource(this)">
+        <option value="custom" ${sourceType === "custom" ? "selected" : ""}>Custom order</option>
+        <option value="inventory" ${sourceType === "inventory" ? "selected" : ""}>Choose from inventory</option>
+      </select>
+    </label>
+    <label class="inventory-picker-wrap" style="${sourceType === "inventory" ? "" : "display:none"}">Inventory item
+      <select class="item-inventory" onchange="applyInventoryToOrderItem(this)">
+        <option value="">Select inventory...</option>
+        ${data.inventory.map(inv => `<option value="${inv.id}" ${item.inventoryId === inv.id ? "selected" : ""}>${escapeHtml(inv.name)} (${Number(inv.quantity || 0)} available)</option>`).join("")}
+      </select>
+    </label>
     <label class="item-name-field">Item description<input class="item-name" required value="${escapeHtml(item.name || "")}" placeholder="Shirt, tumbler, sticker set..."></label>
     <label>Qty<input class="item-qty" type="number" min="1" value="${Number(item.quantity || 1)}"></label>
     <label>Price<input class="item-price" type="number" min="0" step="0.01" value="${escapeHtml(item.price || "")}" placeholder="0.00"></label>
@@ -891,6 +905,23 @@ function addOrderItemRow(item = {}) {
     <label class="item-image-field">Item image<input class="item-image" type="file" accept="image/*"><span class="image-note">${item.image ? "Current image will stay unless you choose a new one." : "Reference photo, design, or mockup."}</span></label>
   `;
   editor.appendChild(row);
+}
+
+function updateOrderItemSource(select) {
+  const row = select.closest(".order-item-row");
+  const inventoryWrap = row.querySelector(".inventory-picker-wrap");
+  const inventorySelect = row.querySelector(".item-inventory");
+  const isInventory = select.value === "inventory";
+  inventoryWrap.style.display = isInventory ? "" : "none";
+  if (!isInventory) inventorySelect.value = "";
+}
+
+function applyInventoryToOrderItem(select) {
+  const row = select.closest(".order-item-row");
+  const inventoryItem = data.inventory.find(item => item.id === select.value);
+  if (!inventoryItem) return;
+  row.querySelector(".item-name").value = inventoryItem.name || "";
+  row.querySelector(".item-price").value = Number(inventoryItem.unitPrice || 0).toFixed(2);
 }
 
 function removeOrderItemRow(button) {
@@ -955,8 +986,12 @@ document.getElementById("entryForm").addEventListener("submit", async event => {
       const file = row.querySelector(".item-image").files[0];
       let image = row.dataset.existingImage || "";
       if (file) image = await prepareOrderImage(file);
+      const sourceType = row.querySelector(".item-source").value;
+      const inventoryId = sourceType === "inventory" ? row.querySelector(".item-inventory").value : "";
       items.push({
         id: crypto.randomUUID(),
+        sourceType,
+        inventoryId,
         name: row.querySelector(".item-name").value.trim(),
         quantity: Number(row.querySelector(".item-qty").value || 1),
         price: Number(row.querySelector(".item-price").value || 0),
@@ -965,11 +1000,13 @@ document.getElementById("entryForm").addEventListener("submit", async event => {
       });
     }
 
+    const calculatedTotal = items.reduce((sum, item) => sum + (Number(item.price || 0) * Number(item.quantity || 1)), 0);
+    const enteredTotal = Number(formData.get("total") || 0);
     const values = {
       customer: formData.get("customer")?.trim(),
       dueDate: formData.get("dueDate"),
       status: formData.get("status"),
-      total: formData.get("total"),
+      total: enteredTotal || calculatedTotal,
       urgent: formData.get("urgent") === "on",
       urgentReason: formData.get("urgentReason")?.trim(),
       notes: formData.get("notes")?.trim(),
@@ -979,9 +1016,14 @@ document.getElementById("entryForm").addEventListener("submit", async event => {
 
     if (editId) {
       const index = data.orders.findIndex(order => order.id === editId);
-      if (index >= 0) data.orders[index] = { ...data.orders[index], ...values, updatedAt: new Date().toISOString() };
+      if (index >= 0) {
+        data.orders[index] = { ...data.orders[index], ...values, updatedAt: new Date().toISOString() };
+        syncInvoiceForOrder(data.orders[index]);
+      }
     } else {
-      data.orders.push({ id: crypto.randomUUID(), createdAt: new Date().toISOString(), ...values });
+      const newOrder = { id: crypto.randomUUID(), createdAt: new Date().toISOString(), ...values };
+      data.orders.push(newOrder);
+      syncInvoiceForOrder(newOrder);
     }
   } else {
     const values = Object.fromEntries(formData.entries());
@@ -1016,7 +1058,33 @@ function filterOrders() {
   openDrawer("Orders");
 }
 
+function syncInvoiceForOrder(order) {
+  const existing = data.invoices.find(invoice => invoice.orderId === order.id);
+  const invoiceValues = {
+    orderId: order.id,
+    customer: order.customer,
+    items: order.items || [],
+    total: Number(order.total || 0),
+    status: order.status === "completed" ? "paid" : "unpaid",
+    dueDate: order.dueDate,
+    updatedAt: new Date().toISOString()
+  };
+  if (existing) {
+    Object.assign(existing, invoiceValues);
+  } else {
+    data.invoices.push({
+      id: crypto.randomUUID(),
+      invoiceNumber: `INV-${String(data.invoices.length + 1).padStart(4, "0")}`,
+      createdAt: new Date().toISOString(),
+      ...invoiceValues
+    });
+  }
+}
+
 function deleteItem(collection, id) {
+  if (collection === "orders") {
+    data.invoices = data.invoices.filter(invoice => invoice.orderId !== id);
+  }
   data[collection] = data[collection].filter(item => item.id !== id);
   saveData();
   openDrawer(collection[0].toUpperCase() + collection.slice(1));
@@ -1147,11 +1215,37 @@ function renderSection(section) {
       <article class="record">
         <div>
           <h3>${escapeHtml(item.name)}</h3>
+          <p><strong>Type:</strong> ${escapeHtml(item.inventoryType || "product")}</p>
           <p><strong>Category:</strong> ${escapeHtml(item.category)}</p>
           <p><strong>Quantity:</strong> ${escapeHtml(item.quantity)}</p>
+          <p><strong>Unit price:</strong> $${Number(item.unitPrice || 0).toFixed(2)}</p>
           <p><strong>SKU:</strong> ${escapeHtml(item.sku)}</p>
         </div>
         <button class="delete" onclick="deleteItem('inventory','${item.id}')">Delete</button>
+      </article>
+    `).join("");
+  }
+
+  if (key === "invoices") {
+    if (!data.invoices.length) return `<div class="empty">Invoices will appear automatically when you create orders.</div>`;
+    return data.invoices.slice().sort((a,b) => (b.createdAt || "").localeCompare(a.createdAt || "")).map(invoice => `
+      <article class="record">
+        <div style="width:100%">
+          <div class="order-topline">
+            <div>
+              <h3>${escapeHtml(invoice.invoiceNumber)}</h3>
+              <p><strong>Customer:</strong> ${escapeHtml(invoice.customer || "")}</p>
+              <p><strong>Due:</strong> ${escapeHtml(invoice.dueDate || "Not set")}</p>
+            </div>
+            <div style="text-align:right">
+              <strong>$${Number(invoice.total || 0).toFixed(2)}</strong><br>
+              <span class="badge">${invoice.status === "paid" ? "Paid" : "Unpaid"}</span>
+            </div>
+          </div>
+          <div class="order-items-list">
+            ${(invoice.items || []).map(item => `<div class="order-item-card"><div></div><div><strong>${escapeHtml(item.name)}</strong><br><small>Qty ${Number(item.quantity || 1)} · $${Number(item.price || 0).toFixed(2)}</small></div></div>`).join("")}
+          </div>
+        </div>
       </article>
     `).join("");
   }
